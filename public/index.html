@@ -1,0 +1,2635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cake Nan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --rose: #c85a7c;
+      --rose-light: #e8a0b4;
+      --rose-pale: #fde8ef;
+      --cream: #fffaf8;
+      --blush: #fff0f4;
+      --deep: #7a2d4a;
+      --text: #3a3a3a;
+      --muted: #999;
+      --white: #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 9999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 5%;
+      height: 72px;
+      background: rgba(255,250,248,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(200,90,124,0.1);
+      transition: all 0.4s;
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--rose);
+      letter-spacing: 2px;
+      cursor: pointer;
+    }
+
+    .nav-logo span {
+      font-family: 'Pinyon Script', cursive;
+      font-size: 38px;
+      color: var(--rose-light);
+      vertical-align: -8px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0;
+      list-style: none;
+    }
+
+    .nav-links li {
+      position: relative;
+    }
+
+    .nav-links a {
+      display: block;
+      padding: 8px 18px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #888;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--rose);
+    }
+
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 18px; right: 18px;
+      height: 2px;
+      background: var(--rose);
+      border-radius: 2px;
+    }
+
+    .nav-cart-btn {
+      background: var(--rose);
+      color: white;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-cart-btn:hover {
+      background: var(--deep);
+      transform: translateY(-1px);
+    }
+
+    .cart-count {
+      background: white;
+      color: var(--rose);
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .page {
+      display: none;
+      min-height: 100vh;
+      padding-top: 72px;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .hero {
+      min-height: calc(100vh - 72px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 8% 80px 10%;
+      background: linear-gradient(160deg, #fff5f8 0%, #fffaf8 60%, #fdf0f5 100%);
+      position: relative;
+    }
+
+    .hero-left::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(232,160,180,0.2), transparent 70%);
+      top: -100px; left: -100px;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .hero-eyebrow-line {
+      width: 40px; height: 1px;
+      background: var(--rose-light);
+    }
+
+    .hero-eyebrow span {
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--rose-light);
+      font-weight: 500;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 72px;
+      line-height: 1.1;
+      color: var(--deep);
+      font-weight: 300;
+      margin-bottom: 28px;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--rose);
+      font-weight: 300;
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      color: #999;
+      line-height: 1.9;
+      margin-bottom: 48px;
+      max-width: 420px;
+      font-weight: 300;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--rose);
+      color: white;
+      border: none;
+      padding: 16px 36px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.3s;
+      box-shadow: 0 10px 30px rgba(200,90,124,0.3);
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      background: var(--deep);
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(200,90,124,0.4);
+    }
+
+    .btn-ghost-nav {
+      background: transparent;
+      color: var(--rose);
+      border: 1.5px solid rgba(200,90,124,0.3);
+      padding: 15px 30px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-ghost-nav:hover {
+      border-color: var(--rose);
+      background: var(--blush);
+    }
+
+    .hero-badges-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 48px;
+      flex-wrap: wrap;
+    }
+
+    .hero-badge {
+      background: white;
+      border: 1px solid rgba(200,90,124,0.15);
+      padding: 10px 18px;
+      border-radius: 50px;
+      font-size: 13px;
+      color: #888;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    }
+
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-right-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(255,250,248,0.3) 0%, transparent 40%);
+    }
+
+    .hero-stat-card {
+      position: absolute;
+      bottom: 50px;
+      left: -24px;
+      background: white;
+      border-radius: 20px;
+      padding: 20px 26px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      z-index: 2;
+    }
+
+    .hero-stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--rose);
+      line-height: 1;
+    }
+
+    .hero-stat-label {
+      font-size: 12px;
+      color: #bbb;
+      line-height: 1.5;
+    }
+
+    .features-strip {
+      background: var(--deep);
+      padding: 40px 10%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      color: white;
+    }
+
+    .feature-icon {
+      font-size: 32px;
+      flex-shrink: 0;
+    }
+
+    .feature-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--rose-light);
+      margin-bottom: 4px;
+    }
+
+    .feature-desc {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      font-weight: 300;
+    }
+
+    .about-strip {
+      padding: 100px 10%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about-imgs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 16px;
+      height: 480px;
+    }
+
+    .about-img-main {
+      grid-row: 1 / 3;
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .about-img-main img,
+    .about-img-sm img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .about-img-sm {
+      border-radius: 18px;
+      overflow: hidden;
+    }
+
+    .about-text .eyebrow {
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--rose-light);
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    .about-text h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px;
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--deep);
+      margin-bottom: 28px;
+    }
+
+    .about-text p {
+      font-size: 15px;
+      color: #999;
+      line-height: 1.9;
+      font-weight: 300;
+      margin-bottom: 16px;
+    }
+
+    .menu-hero {
+      background: linear-gradient(160deg, #fff0f5, #fffaf8);
+      padding: 60px 10% 50px;
+      text-align: center;
+      border-bottom: 1px solid rgba(200,90,124,0.08);
+    }
+
+    .menu-hero .eyebrow {
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--rose-light);
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+
+    .menu-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 60px;
+      font-weight: 300;
+      color: var(--deep);
+      margin-bottom: 16px;
+    }
+
+    .menu-hero p {
+      color: #bbb;
+      font-size: 15px;
+      font-weight: 300;
+    }
+
+    .menu-toolbar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding: 36px 10% 32px;
+      background: var(--cream);
+      border-bottom: 1px solid rgba(200,90,124,0.06);
+    }
+
+    .menu-search-wrap {
+      position: relative;
+      width: 320px;
+      max-width: 100%;
+    }
+
+    .menu-search-wrap .search-icon {
+      position: absolute;
+      left: 18px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--rose-light);
+      font-size: 15px;
+      pointer-events: none;
+    }
+
+    .menu-toolbar input {
+      width: 100%;
+      padding: 13px 20px 13px 44px;
+      border: 1.5px solid rgba(200,90,124,0.15);
+      border-radius: 50px;
+      font-size: 14px;
+      outline: none;
+      background: white;
+      font-family: 'DM Sans', sans-serif;
+      color: #555;
+      transition: 0.3s;
+      box-shadow: 0 4px 16px rgba(200,90,124,0.06);
+    }
+
+    .menu-toolbar input:focus {
+      border-color: var(--rose);
+      box-shadow: 0 0 0 4px rgba(200,90,124,0.08);
+    }
+
+    .menu-toolbar input::placeholder { color: #ccc; }
+
+    /* Custom category dropdown */
+    .cat-dropdown-wrap {
+      position: relative;
+      width: 260px;
+      max-width: 100%;
+      user-select: none;
+    }
+
+    .cat-dropdown-trigger {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 18px;
+      background: white;
+      border: 1.5px solid rgba(200,90,124,0.15);
+      border-radius: 50px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: #555;
+      transition: all 0.3s;
+      box-shadow: 0 4px 16px rgba(200,90,124,0.06);
+    }
+
+    .cat-dropdown-trigger:hover {
+      border-color: var(--rose-light);
+      box-shadow: 0 6px 20px rgba(200,90,124,0.1);
+    }
+
+    .cat-dropdown-wrap.open .cat-dropdown-trigger {
+      border-color: var(--rose);
+      border-radius: 20px 20px 0 0;
+      border-bottom-color: transparent;
+      box-shadow: none;
+    }
+
+    .cat-trigger-emoji { font-size: 16px; line-height: 1; }
+    .cat-trigger-label { flex: 1; }
+
+    .cat-trigger-chevron {
+      width: 20px; height: 20px;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      color: var(--rose-light);
+    }
+
+    .cat-dropdown-wrap.open .cat-trigger-chevron {
+      transform: rotate(180deg);
+      color: var(--rose);
+    }
+
+    .cat-trigger-chevron svg {
+      width: 14px; height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .cat-dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0; right: 0;
+      background: white;
+      border: 1.5px solid var(--rose);
+      border-top: none;
+      border-radius: 0 0 20px 20px;
+      overflow: hidden;
+      z-index: 100;
+      opacity: 0;
+      transform: translateY(-8px);
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 16px 40px rgba(200,90,124,0.14);
+    }
+
+    .cat-dropdown-wrap.open .cat-dropdown-menu {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+
+    .cat-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 18px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: #777;
+      transition: background 0.15s, color 0.15s;
+      border-top: 1px solid rgba(200,90,124,0.06);
+      position: relative;
+    }
+
+    .cat-option:first-child { border-top: none; }
+
+    .cat-option:hover {
+      background: var(--rose-pale);
+      color: var(--deep);
+    }
+
+    .cat-option.selected {
+      color: var(--rose);
+      font-weight: 500;
+    }
+
+    .cat-option.selected::after {
+      content: '';
+      position: absolute;
+      right: 18px; top: 50%;
+      transform: translateY(-50%);
+      width: 6px; height: 6px;
+      background: var(--rose);
+      border-radius: 50%;
+    }
+
+    .cat-option-emoji { font-size: 15px; line-height: 1; }
+    .cat-option-label { flex: 1; }
+
+    .cat-option-count {
+      font-size: 11px;
+      color: var(--rose-light);
+      background: var(--rose-pale);
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: 600;
+      min-width: 22px;
+      text-align: center;
+    }
+
+    .cat-option.selected .cat-option-count {
+      background: rgba(200,90,124,0.15);
+      color: var(--rose);
+    }
+
+    .cake-grid {
+      padding: 50px 8%;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 32px;
+    }
+
+    .cake-card {
+      background: white;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid rgba(200,90,124,0.08);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+      cursor: pointer;
+      transition: transform 0.35s, box-shadow 0.35s;
+    }
+
+    .cake-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 24px 50px rgba(200,90,124,0.14);
+    }
+
+    .cake-main-img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s;
+    }
+
+    .cake-card:hover .cake-main-img {
+      transform: scale(1.04);
+    }
+
+    .cake-main-img-wrap {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .cake-category-pill {
+      position: absolute;
+      top: 16px; left: 16px;
+      background: white;
+      color: var(--rose);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 50px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .cake-thumbs {
+      display: flex;
+      gap: 8px;
+      padding: 14px 16px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      background: #faf4f6;
+      border-bottom: 1px solid rgba(200,90,124,0.06);
+    }
+
+    .cake-thumbs::-webkit-scrollbar { display: none; }
+
+    .cake-thumb {
+      width: 52px;
+      height: 52px;
+      border-radius: 10px;
+      object-fit: cover;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.25s;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .cake-thumb:hover,
+    .cake-thumb.active {
+      border-color: var(--rose);
+      opacity: 1;
+      transform: scale(1.08);
+    }
+
+    .cake-body {
+      padding: 20px 22px 22px;
+    }
+
+    .cake-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: #2a2a2a;
+      margin-bottom: 6px;
+    }
+
+    .cake-desc {
+      font-size: 13px;
+      color: #bbb;
+      line-height: 1.6;
+      font-weight: 300;
+      margin-bottom: 18px;
+    }
+
+    .cake-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cake-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--rose);
+    }
+
+    .add-btn {
+      background: var(--rose);
+      color: white;
+      border: none;
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.25s;
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1;
+    }
+
+    .add-btn:hover {
+      background: var(--deep);
+      transform: scale(1.1) rotate(90deg);
+    }
+
+    .location-hero {
+      background: linear-gradient(160deg, #fff0f5, #fffaf8);
+      padding: 60px 10% 50px;
+      text-align: center;
+      border-bottom: 1px solid rgba(200,90,124,0.08);
+    }
+
+    .location-hero .eyebrow {
+      font-size: 11px; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--rose-light);
+      margin-bottom: 16px; font-weight: 500;
+    }
+
+    .location-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 60px; font-weight: 300; color: var(--deep);
+    }
+
+    .location-body {
+      padding: 60px 8%;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .map-wrap {
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(200,90,124,0.12);
+      border: 1px solid rgba(200,90,124,0.1);
+    }
+
+    .map-wrap iframe {
+      width: 100%; height: 440px;
+      border: none; display: block;
+    }
+
+    .location-info-card {
+      background: white;
+      border-radius: 28px;
+      padding: 40px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+      border: 1px solid rgba(200,90,124,0.08);
+    }
+
+    .location-info-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px; font-weight: 300;
+      color: var(--deep); margin-bottom: 36px;
+    }
+
+    .info-item {
+      display: flex; gap: 20px;
+      align-items: flex-start;
+      padding: 24px 0;
+      border-bottom: 1px solid rgba(200,90,124,0.06);
+    }
+
+    .info-item:last-of-type { border-bottom: none; }
+
+    .info-icon {
+      width: 48px; height: 48px;
+      background: var(--rose-pale);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+    }
+
+    .info-label {
+      font-size: 11px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--rose);
+      font-weight: 600; margin-bottom: 6px;
+    }
+
+    .info-val {
+      color: #666; font-size: 15px; line-height: 1.7;
+    }
+
+    .info-val a {
+      color: var(--rose); text-decoration: none;
+      font-weight: 600; font-size: 18px;
+    }
+
+    .hours-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 24px;
+      margin-top: 6px;
+    }
+
+    .hours-grid span {
+      font-size: 14px; color: #888;
+    }
+
+    .hours-grid span:nth-child(even) {
+      font-weight: 600; color: #444;
+      text-align: right;
+    }
+
+    .open-tag {
+      background: #dcf5e8; color: #1e7a45;
+      font-size: 11px; font-weight: 700;
+      padding: 4px 12px; border-radius: 50px;
+      margin-left: 10px; letter-spacing: 0.5px;
+    }
+
+    .directions-btn {
+      display: block; width: 100%;
+      background: var(--rose); color: white;
+      border: none; padding: 16px;
+      border-radius: 14px; font-size: 15px;
+      font-weight: 500; cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.3s; margin-top: 32px;
+      text-decoration: none; text-align: center;
+      letter-spacing: 0.5px;
+    }
+
+    .directions-btn:hover {
+      background: var(--deep);
+      transform: translateY(-2px);
+    }
+
+    .cart-hero {
+      background: linear-gradient(160deg, #fff0f5, #fffaf8);
+      padding: 60px 10% 50px;
+      text-align: center;
+      border-bottom: 1px solid rgba(200,90,124,0.08);
+    }
+
+    .cart-hero .eyebrow {
+      font-size: 11px; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--rose-light);
+      margin-bottom: 16px; font-weight: 500;
+    }
+
+    .cart-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 60px; font-weight: 300; color: var(--deep);
+    }
+
+    .cart-body {
+      padding: 60px 8%;
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .cart-panel {
+      background: white;
+      border-radius: 28px;
+      padding: 36px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.05);
+      border: 1px solid rgba(200,90,124,0.07);
+    }
+
+    .cart-panel h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px; font-weight: 400;
+      color: var(--deep); margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(200,90,124,0.08);
+    }
+
+    .cart-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(200,90,124,0.06);
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .cart-item-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px; font-weight: 600;
+      color: #333; flex: 1;
+    }
+
+    .cart-item-meta {
+      font-size: 13px; color: #bbb;
+      margin-top: 3px;
+    }
+
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .qty-btn {
+      width: 30px; height: 30px;
+      border: 1.5px solid rgba(200,90,124,0.25);
+      background: white; color: var(--rose);
+      border-radius: 50%; font-size: 16px;
+      cursor: pointer; display: flex;
+      align-items: center; justify-content: center;
+      transition: all 0.2s; font-weight: 500;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .qty-btn:hover {
+      background: var(--rose); color: white;
+      border-color: var(--rose);
+    }
+
+    .qty-num {
+      font-size: 15px; font-weight: 500;
+      color: #333; min-width: 20px;
+      text-align: center;
+    }
+
+    .remove-item-btn {
+      background: none; border: none;
+      color: #ddd; font-size: 18px;
+      cursor: pointer; transition: color 0.2s;
+      padding: 4px;
+    }
+
+    .remove-item-btn:hover { color: #e05555; }
+
+    .cart-item-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px; font-weight: 600;
+      color: var(--rose); min-width: 60px;
+      text-align: right;
+    }
+
+    .cart-empty {
+      text-align: center; padding: 50px 0;
+      color: #ddd; font-size: 15px;
+    }
+
+    .cart-empty-icon { font-size: 48px; margin-bottom: 12px; }
+
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 24px;
+      margin-top: 8px;
+    }
+
+    .cart-total-label {
+      font-size: 14px; color: #999; letter-spacing: 1px;
+      text-transform: uppercase; font-weight: 500;
+    }
+
+    .cart-total-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 34px; font-weight: 600; color: var(--rose);
+    }
+
+    .clear-cart-btn {
+      background: none; border: 1.5px solid rgba(200,90,124,0.2);
+      color: #bbb; padding: 10px 20px;
+      border-radius: 50px; font-size: 13px;
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      transition: all 0.25s; margin-top: 20px;
+    }
+
+    .clear-cart-btn:hover {
+      border-color: #e05555; color: #e05555;
+    }
+
+    .checkout-panel {
+      background: white;
+      border-radius: 28px;
+      padding: 36px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.05);
+      border: 1px solid rgba(200,90,124,0.07);
+    }
+
+    .checkout-panel h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px; font-weight: 400;
+      color: var(--deep); margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(200,90,124,0.08);
+    }
+
+    .form-field {
+      margin-bottom: 16px;
+    }
+
+    .form-field label {
+      display: block;
+      font-size: 11px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--rose);
+      font-weight: 600; margin-bottom: 8px;
+    }
+
+    .form-field input,
+    .form-field textarea {
+      width: 100%; padding: 14px 18px;
+      border: 1.5px solid rgba(200,90,124,0.15);
+      border-radius: 14px; font-size: 15px;
+      outline: none; background: #fffaf9;
+      font-family: 'DM Sans', sans-serif;
+      color: #555; transition: 0.3s;
+    }
+
+    .form-field input:focus,
+    .form-field textarea:focus {
+      border-color: var(--rose);
+      box-shadow: 0 0 0 4px rgba(200,90,124,0.08);
+      background: white;
+    }
+
+    .form-field textarea { resize: none; min-height: 110px; }
+
+    /* ── FULFILLMENT SELECTOR (NEW) ── */
+    .fulfillment-section {
+      margin-bottom: 20px;
+    }
+
+    .fulfillment-section label {
+      display: block;
+      font-size: 11px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--rose);
+      font-weight: 600; margin-bottom: 12px;
+    }
+
+    .fulfillment-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .fulfillment-btn {
+      border: 1.5px solid rgba(200,90,124,0.15);
+      background: #fffaf9;
+      border-radius: 14px;
+      padding: 16px 12px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: #777;
+      transition: all 0.25s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      text-align: center;
+    }
+
+    .fulfillment-btn:hover {
+      border-color: var(--rose);
+      background: var(--blush);
+      color: var(--deep);
+    }
+
+    .fulfillment-btn.selected {
+      border-color: var(--rose);
+      background: var(--rose-pale);
+      color: var(--deep);
+      box-shadow: 0 0 0 3px rgba(200,90,124,0.1);
+    }
+
+    .fulfillment-btn .ff-icon { font-size: 24px; }
+    .fulfillment-btn .ff-label { font-weight: 600; font-size: 14px; }
+    .fulfillment-btn .ff-sub { font-size: 11px; color: #aaa; font-weight: 300; }
+    .fulfillment-btn.selected .ff-sub { color: var(--rose); }
+
+    /* Pickup info banner */
+    .pickup-info-banner {
+      display: none;
+      background: linear-gradient(135deg, #fff8f0 0%, #fffaf8 100%);
+      border: 1.5px solid rgba(200,90,124,0.2);
+      border-radius: 14px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: #8a5a2a;
+      line-height: 1.7;
+      animation: fadeUp 0.3s ease;
+    }
+
+    .pickup-info-banner.visible { display: block; }
+
+    .pickup-info-banner strong {
+      display: block;
+      font-size: 15px;
+      color: var(--deep);
+      margin-bottom: 4px;
+    }
+
+    /* ── PAYMENT METHOD SELECTOR ── */
+    .payment-method-section {
+      margin-bottom: 20px;
+    }
+
+    .payment-method-section label {
+      display: block;
+      font-size: 11px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--rose);
+      font-weight: 600; margin-bottom: 12px;
+    }
+
+    .payment-methods {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .payment-method-btn {
+      border: 1.5px solid rgba(200,90,124,0.15);
+      background: #fffaf9;
+      border-radius: 14px;
+      padding: 14px 12px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: #777;
+      transition: all 0.25s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-align: left;
+    }
+
+    .payment-method-btn:hover {
+      border-color: var(--rose);
+      background: var(--blush);
+      color: var(--deep);
+    }
+
+    .payment-method-btn.selected {
+      border-color: var(--rose);
+      background: var(--rose-pale);
+      color: var(--deep);
+      box-shadow: 0 0 0 3px rgba(200,90,124,0.1);
+    }
+
+    .payment-method-btn .pm-icon {
+      font-size: 20px;
+    }
+
+    /* ── THAI QR PAYMENT BOX ── */
+    .thai-qr-box {
+      display: none;
+      background: linear-gradient(135deg, #fff0f5 0%, #fffaf8 100%);
+      border: 1.5px solid rgba(200,90,124,0.2);
+      border-radius: 20px;
+      padding: 28px 24px;
+      margin-bottom: 20px;
+      text-align: center;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .thai-qr-box.visible { display: block; }
+
+    .thai-qr-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .thai-qr-header h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      color: var(--deep);
+      font-weight: 600;
+    }
+
+    .thai-qr-subtitle {
+      font-size: 13px;
+      color: #bbb;
+      font-weight: 300;
+      margin-bottom: 20px;
+    }
+
+    .qr-visual-wrap {
+      display: inline-block;
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .qr-frame {
+      background: white;
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: 0 8px 30px rgba(200,90,124,0.15);
+      display: inline-block;
+      border: 2px solid rgba(200,90,124,0.12);
+    }
+
+    .qr-frame canvas {
+      display: block;
+      border-radius: 6px;
+    }
+
+    .qr-promptpay-badge {
+      position: absolute;
+      bottom: -10px; left: 50%;
+      transform: translateX(-50%);
+      background: #1a56a8;
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 4px 14px;
+      border-radius: 50px;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(26,86,168,0.35);
+    }
+
+    .qr-amount-display {
+      margin-top: 24px;
+      margin-bottom: 4px;
+    }
+
+    .qr-amount-label {
+      font-size: 12px;
+      color: #bbb;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .qr-amount-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 38px;
+      font-weight: 700;
+      color: var(--rose);
+      line-height: 1.1;
+    }
+
+    .qr-account-info {
+      background: white;
+      border: 1px solid rgba(200,90,124,0.1);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin: 16px 0 0;
+      text-align: left;
+    }
+
+    .qr-account-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: #888;
+      padding: 4px 0;
+    }
+
+    .qr-account-row strong {
+      color: #444;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .qr-note {
+      font-size: 12px;
+      color: #ccc;
+      margin-top: 14px;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    .qr-note span {
+      color: var(--rose);
+      font-weight: 500;
+    }
+
+    /* Slip upload */
+    .slip-upload-section {
+      margin-top: 18px;
+      text-align: left;
+    }
+
+    .slip-upload-section label {
+      display: block;
+      font-size: 11px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--rose);
+      font-weight: 600; margin-bottom: 8px;
+    }
+
+    .slip-upload-zone {
+      border: 1.5px dashed rgba(200,90,124,0.3);
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s;
+      background: #fffaf9;
+      position: relative;
+    }
+
+    .slip-upload-zone:hover {
+      border-color: var(--rose);
+      background: var(--blush);
+    }
+
+    .slip-upload-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .slip-upload-icon { font-size: 28px; margin-bottom: 6px; }
+    .slip-upload-text { font-size: 13px; color: #bbb; font-weight: 300; }
+    .slip-upload-text strong { color: var(--rose); font-weight: 600; }
+
+    .slip-preview {
+      display: none;
+      margin-top: 12px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1.5px solid rgba(200,90,124,0.15);
+    }
+
+    .slip-preview img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: contain;
+      background: #fafafa;
+    }
+
+    /* COD info box */
+    .cod-info-box {
+      display: none;
+      background: linear-gradient(135deg, #f0fff7 0%, #fffaf8 100%);
+      border: 1.5px solid rgba(46,160,100,0.2);
+      border-radius: 16px;
+      padding: 20px 22px;
+      margin-bottom: 20px;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .cod-info-box.visible { display: block; }
+
+    .cod-info-box .cod-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      color: #1e7a45;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .cod-info-box p {
+      font-size: 13px;
+      color: #5a9e72;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* ── SUBMIT BUTTON WITH LOADING STATE ── */
+    .place-order-btn {
+      width: 100%;
+      background: var(--rose);
+      color: white; border: none;
+      padding: 17px; border-radius: 14px;
+      font-size: 15px; font-weight: 500;
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      transition: all 0.3s; letter-spacing: 0.5px;
+      margin-top: 8px;
+      box-shadow: 0 8px 25px rgba(200,90,124,0.3);
+      position: relative;
+    }
+
+    .place-order-btn:hover:not(:disabled) {
+      background: var(--deep);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(200,90,124,0.4);
+    }
+
+    .place-order-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .order-msg { margin-top: 16px; font-weight: 600; color: #2d8f55; }
+    .order-msg.error { color: #d43f3f; }
+
+    .receipt-box {
+      margin-top: 24px;
+      background: #fff8fa;
+      border: 1px solid rgba(200,90,124,0.12);
+      border-radius: 18px; padding: 28px;
+      display: none;
+    }
+
+    .receipt-box h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px; color: var(--deep);
+      margin-bottom: 16px;
+    }
+
+    .receipt-box p { font-size: 14px; color: #777; margin-bottom: 6px; }
+
+    .receipt-item {
+      display: flex; justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(200,90,124,0.06);
+      font-size: 14px; color: #666;
+    }
+
+    .receipt-total {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px; color: var(--rose);
+      font-weight: 600; margin-top: 16px;
+    }
+
+    .contact-hero {
+      background: linear-gradient(160deg, #fff0f5, #fffaf8);
+      padding: 60px 10% 50px;
+      text-align: center;
+      border-bottom: 1px solid rgba(200,90,124,0.08);
+    }
+
+    .contact-hero .eyebrow {
+      font-size: 11px; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--rose-light);
+      margin-bottom: 16px; font-weight: 500;
+    }
+
+    .contact-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 60px; font-weight: 300; color: var(--deep);
+    }
+
+    .contact-body {
+      padding: 60px 8%;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .contact-info-card {
+      background: white;
+      border-radius: 28px;
+      padding: 40px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.05);
+      border: 1px solid rgba(200,90,124,0.07);
+    }
+
+    .contact-info-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px; font-weight: 400;
+      color: var(--deep); margin-bottom: 28px;
+    }
+
+    .social-link-item {
+      display: flex; align-items: center;
+      gap: 16px; padding: 16px 20px;
+      border: 1.5px solid rgba(200,90,124,0.1);
+      border-radius: 16px; margin-bottom: 12px;
+      text-decoration: none; color: #555;
+      font-size: 14px; transition: all 0.3s;
+      background: #fffaf9;
+    }
+
+    .social-link-item:hover {
+      border-color: var(--rose);
+      background: var(--blush);
+      color: var(--deep);
+      transform: translateX(6px);
+    }
+
+    .social-icon-circle {
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-form-card {
+      background: white;
+      border-radius: 28px;
+      padding: 40px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.05);
+      border: 1px solid rgba(200,90,124,0.07);
+    }
+
+    .contact-form-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px; font-weight: 400;
+      color: var(--deep); margin-bottom: 28px;
+    }
+
+    .contact-send-btn {
+      width: 100%;
+      background: var(--rose); color: white;
+      border: none; padding: 17px;
+      border-radius: 14px; font-size: 15px;
+      font-weight: 500; cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.3s; letter-spacing: 0.5px;
+      margin-top: 8px;
+      box-shadow: 0 8px 25px rgba(200,90,124,0.3);
+    }
+
+    .contact-send-btn:hover {
+      background: var(--deep);
+      transform: translateY(-2px);
+    }
+
+    .contact-success {
+      display: none;
+      background: #d4f5e2;
+      border: 1px solid #9adbbe;
+      color: #1e7a45;
+      padding: 16px 20px;
+      border-radius: 14px;
+      font-weight: 600;
+      margin-top: 14px;
+      font-size: 14px;
+    }
+
+    .footer {
+      background: var(--deep);
+      color: white;
+      text-align: center;
+      padding: 50px 10%;
+    }
+
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px; font-weight: 300;
+      letter-spacing: 3px; color: var(--rose-light);
+      margin-bottom: 12px;
+    }
+
+    .footer p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+      font-weight: 300;
+      line-height: 1.8;
+    }
+
+    .footer-divider {
+      width: 40px; height: 1px;
+      background: rgba(232,160,180,0.3);
+      margin: 20px auto;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .page.active {
+      animation: fadeUp 0.5s ease both;
+    }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .about-strip { grid-template-columns: 1fr; }
+      .about-imgs { display: none; }
+      .features-strip { grid-template-columns: 1fr; gap: 24px; }
+      .location-body, .cart-body, .contact-body {
+        grid-template-columns: 1fr;
+      }
+      .hero-title { font-size: 52px; }
+    }
+
+    @media (max-width: 600px) {
+      .nav { padding: 0 5%; }
+      .nav-links { display: none; }
+      .hero-title { font-size: 40px; }
+      .menu-hero h1, .location-hero h1, .cart-hero h1, .contact-hero h1 { font-size: 42px; }
+      .cake-grid { padding: 30px 5%; }
+      .payment-methods { grid-template-columns: 1fr; }
+      .fulfillment-options { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-logo" onclick="showPage('home')">Cake <span>Nan</span></div>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" class="active" id="nav-home">Home</a></li>
+    <li><a onclick="showPage('menu')" id="nav-menu">Menu</a></li>
+    <li><a onclick="showPage('location')" id="nav-location">Location</a></li>
+    <li><a onclick="showPage('contact')" id="nav-contact">Contact</a></li>
+  </ul>
+  <button class="nav-cart-btn" onclick="showPage('cart')">
+    🛒 Cart <span class="cart-count" id="cartCount">0</span>
+  </button>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-line"></div>
+        <span>Nan Province, Thailand</span>
+      </div>
+      <h1 class="hero-title">Every Cake Tells a <em>Sweet</em> Story</h1>
+      <p class="hero-desc">Freshly baked cakes crafted with love in the heart of Nan. Browse our menu, pick your favourite, and order in minutes.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="showPage('menu')">Explore Our Cakes</button>
+        <button class="btn-ghost-nav" onclick="showPage('location')">Find Us 🗺️</button>
+      </div>
+      <div class="hero-badges-row">
+        <div class="hero-badge">🎂 Handmade Daily</div>
+        <div class="hero-badge">🌸 Fresh Ingredients</div>
+        <div class="hero-badge">🚚 Local Delivery</div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=80" alt="Chocolate layer cake" />
+      <div class="hero-right-overlay"></div>
+      <div class="hero-stat-card">
+        <div class="hero-stat-num">6+</div>
+        <div>
+          <div class="hero-stat-label">Cake<br>Varieties</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="features-strip">
+    <div class="feature-item">
+      <div class="feature-icon">🧁</div>
+      <div>
+        <div class="feature-title">Baked Fresh Daily</div>
+        <div class="feature-desc">Every cake is made from scratch each morning</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">🌿</div>
+      <div>
+        <div class="feature-title">Quality Ingredients</div>
+        <div class="feature-desc">Locally sourced, premium quality always</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">🎁</div>
+      <div>
+        <div class="feature-title">Custom Orders</div>
+        <div class="feature-desc">Special occasions deserve special cakes</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-strip">
+    <div class="about-imgs">
+      <div class="about-img-main">
+        <img src="https://images.unsplash.com/photo-1562777717-dc6984f65a63?auto=format&fit=crop&w=600&q=80" alt="Cake" />
+      </div>
+      <div class="about-img-sm">
+        <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=400&q=80" alt="Cake" />
+      </div>
+      <div class="about-img-sm">
+        <img src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=400&q=80" alt="Cheesecake" />
+      </div>
+    </div>
+    <div class="about-text">
+      <div class="eyebrow">Our Story</div>
+      <h2>Made with Love in Nan</h2>
+      <p>Cake Nan was born from a simple passion: creating beautiful, delicious cakes that bring people together. Nestled in the charming province of Nan, Thailand, we bake every cake by hand using the finest local ingredients.</p>
+      <p>From classic vanilla to vibrant fruit cakes, every creation is a little piece of our heart. We believe that the best cakes aren't just eaten — they're remembered.</p>
+      <button class="btn-primary" onclick="showPage('menu')" style="margin-top: 12px;">See Our Menu</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-logo">Cake Nan</div>
+    <div class="footer-divider"></div>
+    <p>Mahawong Rd, Nai Wiang, Mueang Nan District, Nan 55000</p>
+    <p>📞 089 434 0422</p>
+    <p style="margin-top: 16px;">© 2026 Cake Nan Bakery · Made with 💕 in Nan, Thailand</p>
+  </div>
+</div>
+
+<!-- MENU -->
+<div class="page" id="page-menu">
+  <div class="menu-hero">
+    <div class="eyebrow">Our Menu</div>
+    <h1>Freshly Baked Cakes</h1>
+    <p>Made with the finest ingredients, baked fresh every morning</p>
+  </div>
+
+  <div class="menu-toolbar">
+    <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap; justify-content:center;">
+      <div class="menu-search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Search cake name..." />
+      </div>
+      <div class="cat-dropdown-wrap" id="catDropdown">
+        <div class="cat-dropdown-trigger" onclick="toggleCatDropdown()">
+          <span class="cat-trigger-emoji" id="triggerEmoji">🎂</span>
+          <span class="cat-trigger-label" id="triggerLabel">All Cakes</span>
+          <span class="cat-trigger-chevron">
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </span>
+        </div>
+        <div class="cat-dropdown-menu" id="catMenu">
+          <div class="cat-option selected" data-cat="All" data-emoji="🎂" data-label="All Cakes" onclick="selectCatDrop(this)">
+            <span class="cat-option-emoji">🎂</span>
+            <span class="cat-option-label">All Cakes</span>
+            <span class="cat-option-count" id="count-All">6</span>
+          </div>
+          <div class="cat-option" data-cat="Chocolate" data-emoji="🍫" data-label="Chocolate" onclick="selectCatDrop(this)">
+            <span class="cat-option-emoji">🍫</span>
+            <span class="cat-option-label">Chocolate</span>
+            <span class="cat-option-count" id="count-Chocolate">0</span>
+          </div>
+          <div class="cat-option" data-cat="Fruit" data-emoji="🍓" data-label="Fruit" onclick="selectCatDrop(this)">
+            <span class="cat-option-emoji">🍓</span>
+            <span class="cat-option-label">Fruit</span>
+            <span class="cat-option-count" id="count-Fruit">0</span>
+          </div>
+          <div class="cat-option" data-cat="Classic" data-emoji="✨" data-label="Classic" onclick="selectCatDrop(this)">
+            <span class="cat-option-emoji">✨</span>
+            <span class="cat-option-label">Classic</span>
+            <span class="cat-option-count" id="count-Classic">0</span>
+          </div>
+          <div class="cat-option" data-cat="Birthday" data-emoji="🎉" data-label="Birthday" onclick="selectCatDrop(this)">
+            <span class="cat-option-emoji">🎉</span>
+            <span class="cat-option-label">Birthday</span>
+            <span class="cat-option-count" id="count-Birthday">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cake-grid" id="cakeContainer"></div>
+
+  <div class="footer">
+    <div class="footer-logo">Cake Nan</div>
+    <div class="footer-divider"></div>
+    <p>© 2026 Cake Nan Bakery · Made with 💕 in Nan, Thailand</p>
+  </div>
+</div>
+
+<!-- LOCATION -->
+<div class="page" id="page-location">
+  <div class="location-hero">
+    <div class="eyebrow">Visit Us</div>
+    <h1>Find Our Bakery</h1>
+  </div>
+
+  <div class="location-body">
+    <div class="map-wrap">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3787.0!2d100.7773!3d18.7756!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30da66958a0e7b9b%3A0x0!2sMahawong+Rd%2C+Nai+Wiang%2C+Mueang+Nan+District%2C+Nan+55000!5e0!3m2!1sen!2sth!4v1700000000000!5m2!1sen!2sth"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+
+    <div class="location-info-card">
+      <h3>Cake Nan Bakery 🎂</h3>
+
+      <div class="info-item">
+        <div class="info-icon">📍</div>
+        <div>
+          <div class="info-label">Address</div>
+          <div class="info-val">Mahawong Rd, Nai Wiang,<br>Mueang Nan District,<br>Chang Wat Nan 55000</div>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <div class="info-icon">📞</div>
+        <div>
+          <div class="info-label">Phone</div>
+          <div class="info-val"><a href="tel:0894340422">089 434 0422</a></div>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <div class="info-icon">🕐</div>
+        <div>
+          <div class="info-label">Opening Hours <span class="open-tag">Open</span></div>
+          <div class="hours-grid" style="margin-top:10px;">
+            <span>Mon – Fri</span><span>7:00 AM – 8:00 PM</span>
+            <span>Saturday</span><span>7:00 AM – 8:00 PM</span>
+            <span>Sunday</span><span>8:00 AM – 8:00 PM</span>
+          </div>
+        </div>
+      </div>
+
+      <a href="https://maps.google.com/?q=Mahawong+Rd+Nai+Wiang+Mueang+Nan+District+Nan+55000" target="_blank" class="directions-btn">
+        Get Directions 🗺️
+      </a>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-logo">Cake Nan</div>
+    <div class="footer-divider"></div>
+    <p>© 2026 Cake Nan Bakery · Made with 💕 in Nan, Thailand</p>
+  </div>
+</div>
+
+<!-- CART -->
+<div class="page" id="page-cart">
+  <div class="cart-hero">
+    <div class="eyebrow">Your Order</div>
+    <h1>Shopping Cart</h1>
+  </div>
+
+  <div class="cart-body">
+    <div>
+      <div class="cart-panel">
+        <h3>🛒 Cart Items</h3>
+        <div id="cartItemsEl"></div>
+        <div class="cart-total-row">
+          <div class="cart-total-label">Total</div>
+          <div class="cart-total-val">฿<span id="cartTotal">0</span></div>
+        </div>
+        <button class="clear-cart-btn" onclick="clearCart()">Clear Cart</button>
+      </div>
+    </div>
+
+    <div class="checkout-panel">
+      <h3>📋 Checkout</h3>
+      <form id="checkoutForm">
+        <div class="form-field">
+          <label>Full Name</label>
+          <input type="text" id="customerName" placeholder="Your name" required />
+        </div>
+        <div class="form-field">
+          <label>Phone Number</label>
+          <input type="text" id="customerPhone" placeholder="e.g. 089 123 4567" required />
+        </div>
+
+        <!-- ── FULFILLMENT METHOD (NEW) ── -->
+        <div class="fulfillment-section">
+          <label>Order Method</label>
+          <div class="fulfillment-options">
+            <button type="button" class="fulfillment-btn selected" id="ff-delivery" onclick="selectFulfillment('delivery')">
+              <span class="ff-icon">🚚</span>
+              <span class="ff-label">Delivery</span>
+              
+            </button>
+            <button type="button" class="fulfillment-btn" id="ff-pickup" onclick="selectFulfillment('pickup')">
+              <span class="ff-icon">❤️</span>
+              <span class="ff-label">Store Pickup</span>
+              
+            </button>
+          </div>
+        </div>
+
+        <!-- Delivery address (hidden for pickup) -->
+        <div class="form-field" id="addressField">
+          <label>Delivery Address</label>
+          <textarea id="customerAddress" placeholder="Your delivery address..."></textarea>
+        </div>
+
+        <!-- Pickup info banner (shown for pickup) -->
+        <div class="pickup-info-banner" id="pickupBanner">
+          <strong>🏪 Store Pickup Selected</strong>
+          Mahawong Rd, Nai Wiang, Mueang Nan District, Nan 55000<br>
+          📞 089 434 0422 · Open daily 7:00 AM – 8:00 PM<br>
+          <span style="margin-top:6px; display:block; color:#b86a3a; font-weight:500;">We'll call you when your order is ready!</span>
+        </div>
+
+        <!-- ── PAYMENT METHOD ── -->
+        <div class="payment-method-section">
+          <label>Payment Method</label>
+          <div class="payment-methods">
+            <button type="button" class="payment-method-btn selected" id="pm-qr" onclick="selectPayment('qr')">
+              <span class="pm-icon">📱</span>
+              <span>PromptPay QR</span>
+            </button>
+            <button type="button" class="payment-method-btn" id="pm-cod" onclick="selectPayment('cod')">
+              <span class="pm-icon">💵</span>
+              <span>Cash on Delivery</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ── THAI QR PAYMENT BOX ── -->
+        <div class="thai-qr-box visible" id="thaiQrBox">
+          <div class="thai-qr-header">
+            <span style="font-size:24px;">🇹🇭</span>
+            <h4>PromptPay Payment</h4>
+          </div>
+          <div class="thai-qr-subtitle">สแกน QR เพื่อชำระเงิน · Scan to pay</div>
+
+          <div class="qr-visual-wrap">
+            <div class="qr-frame">
+              <canvas id="promptpayQR" width="180" height="180"></canvas>
+            </div>
+            <div class="qr-promptpay-badge">PromptPay</div>
+          </div>
+
+          <div class="qr-amount-display">
+            <div class="qr-amount-label">ยอดที่ต้องชำระ · Amount Due</div>
+            <div class="qr-amount-num">฿<span id="qrAmountDisplay">0</span></div>
+          </div>
+
+          <div class="qr-account-info">
+            <div class="qr-account-row">
+              <span>ชื่อบัญชี · Account Name</span>
+              <strong>Cake Nan Bakery</strong>
+            </div>
+            <div class="qr-account-row">
+              <span>เบอร์ PromptPay</span>
+              <strong>089-434-0422</strong>
+            </div>
+            <div class="qr-account-row">
+              <span>ธนาคาร · Bank</span>
+              <strong>ไทยพาณิชย์ (SCB)</strong>
+            </div>
+          </div>
+
+          <div class="qr-note">
+            📸 กรุณาแนบสลิปหลังชำระเงิน<br>
+            <span>Please upload your payment slip below</span>
+          </div>
+
+          <!-- Slip Upload -->
+          <div class="slip-upload-section">
+            <label>Upload Payment Slip · แนบสลิป</label>
+            <div class="slip-upload-zone" id="slipZone">
+              <input type="file" id="slipFile" accept="image/*" onchange="previewSlip(event)" />
+              <div class="slip-upload-icon">🧾</div>
+              <div class="slip-upload-text">
+                <strong>Click to upload</strong> or drag your slip here<br>
+                PNG, JPG supported
+              </div>
+            </div>
+            <div class="slip-preview" id="slipPreview">
+              <img id="slipPreviewImg" src="" alt="Payment slip" />
+            </div>
+          </div>
+        </div>
+
+        <!-- ── CASH ON DELIVERY BOX ── -->
+        <div class="cod-info-box" id="codInfoBox">
+          <div class="cod-title">💵 Cash on Delivery</div>
+          <p>ชำระเงินเมื่อได้รับสินค้า · Pay when your order arrives at your door. Our delivery staff will collect the exact amount.</p>
+          <p style="margin-top:8px; font-weight:500; color:#1e7a45;">No prepayment needed — easy & convenient!</p>
+        </div>
+
+        <div class="form-field" style="margin-top:8px;">
+          <label>Special Notes (optional)</label>
+          <input type="text" id="customerNotes" placeholder="e.g. No nuts, extra sweet, etc." />
+        </div>
+
+        <button type="submit" class="place-order-btn" id="placeOrderBtn">Place Order 🎂</button>
+      </form>
+      <p id="orderMsg" class="order-msg"></p>
+      <div id="receiptBox" class="receipt-box"></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-logo">Cake Nan</div>
+    <div class="footer-divider"></div>
+    <p>© 2026 Cake Nan Bakery · Made with 💕 in Nan, Thailand</p>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="page" id="page-contact">
+  <div class="contact-hero">
+    <div class="eyebrow">Say Hello</div>
+    <h1>Contact Us</h1>
+  </div>
+
+  <div class="contact-body">
+    <div class="contact-info-card">
+      <h3>Get in Touch 💌</h3>
+      <p style="font-size:14px; color:#bbb; font-weight:300; margin-bottom:24px; line-height:1.8;">
+        Want a custom cake for a special occasion? Reach out and we'll make your dream cake come true.
+      </p>
+      <a href="https://line.me/ti/p/~cakenan" target="_blank" class="social-link-item">
+        <div class="social-icon-circle" style="background:#06C755;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+        </div>
+        Line: @cakenan
+      </a>
+      <a href="https://facebook.com/cake.nan.9" target="_blank" class="social-link-item">
+        <div class="social-icon-circle" style="background:#1877F2;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </div>
+        Facebook: Cake Nan 
+      </a>
+      <a href="https://instagram.com/cakenan" target="_blank" class="social-link-item">
+        <div class="social-icon-circle" style="background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </div>
+        Instagram: @cakenan
+      </a>
+    </div>
+
+    <div class="contact-form-card">
+      <h3>Send a Message 💌</h3>
+      <form id="contactForm">
+        <div class="form-field">
+          <label>Your Name</label>
+          <input type="text" id="contactName" placeholder="Your name" required />
+        </div>
+        <div class="form-field">
+          <label>Phone Number</label>
+          <input type="text" id="contactPhone" placeholder="Phone number" required />
+        </div>
+        <div class="form-field">
+          <label>Email Address</label>
+          <input type="email" id="contactEmail" placeholder="your@email.com" required />
+        </div>
+        <div class="form-field">
+          <label>Message</label>
+          <textarea id="contactMessage" placeholder="Your message or custom cake request..." required></textarea>
+        </div>
+        <button type="submit" class="contact-send-btn">Send Message 💕</button>
+      </form>
+      <div id="contactSuccess" class="contact-success">
+        🎉 Message sent! We'll get back to you soon.
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-logo">Cake Nan</div>
+    <div class="footer-divider"></div>
+    <p>Mahawong Rd, Nai Wiang, Mueang Nan District, Nan 55000 · 📞 089 434 0422</p>
+    <p style="margin-top: 10px;">© 2026 Cake Nan Bakery · Made with 💕 in Nan, Thailand</p>
+  </div>
+</div>
+
+<!-- QR CODE LIBRARY -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="js/menu.js"></script>
+
+<script>
+  // ── CONFIG ────────────────────────────────────────────────
+  const API_BASE = '/api';
+
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  // ── CAKE DATA ── (lives in js/menu.js so the server uses the same prices)
+  const cakes = window.CAKE_MENU || [];
+
+  // ── CART ──────────────────────────────────────────────────
+  let cart = JSON.parse(localStorage.getItem("cakeNanCart")) || [];
+  let selectedPayment = 'qr';
+  let selectedFulfillment = 'delivery';
+
+  function saveCart() {
+    localStorage.setItem("cakeNanCart", JSON.stringify(cart));
+    updateCartCount();
+  }
+
+  function updateCartCount() {
+    const total = cart.reduce((s, i) => s + i.quantity, 0);
+    document.getElementById("cartCount").textContent = total;
+  }
+
+  function addToCart(cakeId) {
+    const cake = cakes.find(c => c.id === cakeId);
+    const existing = cart.find(i => i.id === cakeId);
+    if (existing) {
+      existing.quantity++;
+    } else {
+      cart.push({ id: cake.id, name: cake.name, price: cake.price, quantity: 1 });
+    }
+    saveCart();
+    const btn = document.querySelector(`[data-add="${cakeId}"]`);
+    if (btn) {
+      btn.textContent = '✓';
+      btn.style.background = '#2d8f55';
+      setTimeout(() => { btn.textContent = '+'; btn.style.background = ''; }, 1200);
+    }
+  }
+
+  function increaseQty(id) {
+    const item = cart.find(c => c.id === id);
+    if (item) { item.quantity++; saveCart(); renderCart(); }
+  }
+
+  function decreaseQty(id) {
+    const item = cart.find(c => c.id === id);
+    if (item) {
+      item.quantity > 1 ? item.quantity-- : cart = cart.filter(c => c.id !== id);
+      saveCart(); renderCart();
+    }
+  }
+
+  function removeItem(id) {
+    cart = cart.filter(c => c.id !== id);
+    saveCart(); renderCart();
+  }
+
+  function clearCart() {
+    cart = []; saveCart(); renderCart();
+  }
+
+  function renderCart() {
+    const el = document.getElementById("cartItemsEl");
+    const totalEl = document.getElementById("cartTotal");
+
+    if (cart.length === 0) {
+      el.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon">🛒</div>Your cart is empty</div>`;
+      totalEl.textContent = "0";
+      updateQRAmount(0);
+      return;
+    }
+
+    let total = 0;
+    let html = '';
+    cart.forEach(item => {
+      const sub = item.price * item.quantity;
+      total += sub;
+      html += `
+        <div class="cart-item-row">
+          <div>
+            <div class="cart-item-name">${escapeHtml(item.name)}</div>
+            <div class="cart-item-meta">฿${item.price} each</div>
+          </div>
+          <div class="qty-controls">
+            <button class="qty-btn" onclick="decreaseQty(${item.id})">−</button>
+            <span class="qty-num">${item.quantity}</span>
+            <button class="qty-btn" onclick="increaseQty(${item.id})">+</button>
+          </div>
+          <div class="cart-item-price">฿${sub}</div>
+          <button class="remove-item-btn" onclick="removeItem(${item.id})">✕</button>
+        </div>
+      `;
+    });
+
+    el.innerHTML = html;
+    totalEl.textContent = total;
+    updateQRAmount(total);
+  }
+
+  // ── FULFILLMENT METHOD (NEW) ──────────────────────────────
+  function selectFulfillment(method) {
+    selectedFulfillment = method;
+    document.getElementById('ff-delivery').classList.toggle('selected', method === 'delivery');
+    document.getElementById('ff-pickup').classList.toggle('selected', method === 'pickup');
+    
+    const addressField = document.getElementById('addressField');
+    const pickupBanner = document.getElementById('pickupBanner');
+    const addressTextarea = document.getElementById('customerAddress');
+    const codBtn = document.getElementById('pm-cod');
+    const codLabel = codBtn.querySelector('span:last-child');
+
+    if (method === 'pickup') {
+      addressField.style.display = 'none';
+      addressTextarea.removeAttribute('required');
+      pickupBanner.classList.add('visible');
+      // Update COD label for pickup context
+      codLabel.textContent = 'Pay at Store';
+    } else {
+      addressField.style.display = 'block';
+      addressTextarea.setAttribute('required', 'required');
+      pickupBanner.classList.remove('visible');
+      codLabel.textContent = 'Cash on Delivery';
+    }
+  }
+
+  // ── PAYMENT METHOD ────────────────────────────────────────
+  function selectPayment(method) {
+    selectedPayment = method;
+    document.getElementById('pm-qr').classList.toggle('selected', method === 'qr');
+    document.getElementById('pm-cod').classList.toggle('selected', method === 'cod');
+    document.getElementById('thaiQrBox').classList.toggle('visible', method === 'qr');
+    document.getElementById('codInfoBox').classList.toggle('visible', method === 'cod');
+    if (method === 'qr') {
+      const total = cart.reduce((s, i) => s + i.price * i.quantity, 0);
+      updateQRAmount(total);
+    }
+  }
+
+  // ── PROMPTPAY QR CODE ────────────────────────────────────
+  function buildPromptPayPayload(phoneNumber, amount) {
+    const phone = phoneNumber.replace(/\D/g, '');
+    const normalised = '0066' + phone.slice(1);
+
+    function tlv(tag, value) {
+      const len = value.length.toString().padStart(2, '0');
+      return tag + len + value;
+    }
+
+    const merchantInfo = tlv('00', '01') + tlv('01', normalised);
+    const merchantAccountInfo = tlv('29', merchantInfo);
+
+    let payload =
+      tlv('00', '01') +
+      merchantAccountInfo +
+      tlv('52', '0000') +
+      tlv('53', '764') +
+      (amount > 0 ? tlv('54', amount.toFixed(2)) : '') +
+      tlv('58', 'TH') +
+      tlv('59', 'Cake Nan') +
+      tlv('60', 'Nan');
+
+    payload += '6304';
+    const crc = crc16(payload);
+    payload += crc.toString(16).toUpperCase().padStart(4, '0');
+    return payload;
+  }
+
+  function crc16(data) {
+    let crc = 0xFFFF;
+    for (let i = 0; i < data.length; i++) {
+      crc ^= data.charCodeAt(i) << 8;
+      for (let j = 0; j < 8; j++) {
+        if (crc & 0x8000) crc = (crc << 1) ^ 0x1021;
+        else crc <<= 1;
+        crc &= 0xFFFF;
+      }
+    }
+    return crc;
+  }
+
+  function generateQR(amount) {
+    const payload = buildPromptPayPayload('0894340422', amount);
+    const canvas = document.getElementById('promptpayQR');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, 180, 180);
+
+    const container = document.createElement('div');
+    container.style.display = 'none';
+    document.body.appendChild(container);
+
+    try {
+      new QRCode(container, {
+        text: payload,
+        width: 180,
+        height: 180,
+        colorDark: '#3a3a3a',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+
+      setTimeout(() => {
+        const img = container.querySelector('img');
+        if (img) {
+          const tempImg = new Image();
+          tempImg.onload = () => {
+            ctx.drawImage(tempImg, 0, 0, 180, 180);
+            drawQRLogo(ctx);
+          };
+          tempImg.src = img.src;
+        }
+        document.body.removeChild(container);
+      }, 100);
+    } catch(e) {
+      document.body.removeChild(container);
+      drawQRPlaceholder(ctx, amount);
+    }
+  }
+
+  function drawQRLogo(ctx) {
+    const cx = 90, cy = 90, sz = 28;
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(cx - sz/2 - 3, cy - sz/2 - 3, sz + 6, sz + 6);
+    ctx.fillStyle = '#c85a7c';
+    ctx.beginPath();
+    ctx.roundRect(cx - sz/2, cy - sz/2, sz, sz, 6);
+    ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 16px serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('🎂', cx, cy);
+  }
+
+  function drawQRPlaceholder(ctx, amount) {
+    ctx.fillStyle = '#f5f5f5';
+    ctx.fillRect(0, 0, 180, 180);
+    ctx.fillStyle = '#c85a7c';
+    ctx.font = 'bold 13px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('PromptPay', 90, 75);
+    ctx.font = '12px sans-serif';
+    ctx.fillStyle = '#666';
+    ctx.fillText('089-434-0422', 90, 100);
+    ctx.fillText('฿' + amount.toFixed(2), 90, 120);
+  }
+
+  function updateQRAmount(amount) {
+    const el = document.getElementById('qrAmountDisplay');
+    if (el) el.textContent = amount.toLocaleString();
+    generateQR(amount);
+  }
+
+  // ── SLIP PREVIEW ──────────────────────────────────────────
+  function previewSlip(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const preview = document.getElementById('slipPreview');
+      const img = document.getElementById('slipPreviewImg');
+      img.src = e.target.result;
+      preview.style.display = 'block';
+      document.querySelector('.slip-upload-text').innerHTML =
+        `<strong style="color:#2d8f55;">✓ ${file.name}</strong><br><span style="font-size:11px;color:#bbb;">Click to change</span>`;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ── DISPLAY CAKES ────────────────────────────────────────
+  function displayCakes(list = cakes) {
+    const container = document.getElementById("cakeContainer");
+    if (!container) return;
+
+    if (list.length === 0) {
+      container.innerHTML = "<p style='text-align:center; width:100%; color:#ccc; padding: 40px 0;'>No cakes found.</p>";
+      return;
+    }
+
+    container.innerHTML = '';
+    list.forEach(cake => {
+      const card = document.createElement("div");
+      card.className = "cake-card";
+      card.innerHTML = `
+        <div class="cake-main-img-wrap">
+          <img class="cake-main-img" id="main-img-${cake.id}" src="${cake.images[0]}" alt="${cake.name}" />
+          <div class="cake-category-pill">${cake.category}</div>
+        </div>
+        <div class="cake-thumbs" id="thumbs-${cake.id}">
+          ${cake.images.map((img, idx) => `
+            <img
+              class="cake-thumb ${idx === 0 ? 'active' : ''}"
+              src="${img}"
+              alt="view ${idx+1}"
+              onclick="switchImage(${cake.id}, '${img}', this)"
+            />
+          `).join('')}
+        </div>
+        <div class="cake-body">
+          <div class="cake-name">${cake.name}</div>
+          <div class="cake-desc">${cake.description}</div>
+          <div class="cake-footer">
+            <div class="cake-price">฿${cake.price}</div>
+            <button class="add-btn" data-add="${cake.id}" onclick="addToCart(${cake.id})">+</button>
+          </div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function switchImage(cakeId, src, thumbEl) {
+    const mainImg = document.getElementById(`main-img-${cakeId}`);
+    if (mainImg) mainImg.src = src;
+    const thumbs = document.querySelectorAll(`#thumbs-${cakeId} .cake-thumb`);
+    thumbs.forEach(t => t.classList.remove('active'));
+    thumbEl.classList.add('active');
+  }
+
+  let activeCat = 'All';
+
+  function updateCatCounts() {
+    const search = document.getElementById("searchInput")?.value.toLowerCase() || '';
+    ['All','Chocolate','Fruit','Classic','Birthday'].forEach(cat => {
+      const count = cakes.filter(c =>
+        c.name.toLowerCase().includes(search) &&
+        (cat === 'All' || c.category === cat)
+      ).length;
+      const el = document.getElementById(`count-${cat}`);
+      if (el) el.textContent = count;
+    });
+  }
+
+  function toggleCatDropdown() {
+    document.getElementById('catDropdown').classList.toggle('open');
+  }
+
+  function selectCatDrop(el) {
+    activeCat = el.dataset.cat;
+    document.querySelectorAll('.cat-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('triggerEmoji').textContent = el.dataset.emoji;
+    document.getElementById('triggerLabel').textContent = el.dataset.label;
+    document.getElementById('catDropdown').classList.remove('open');
+    filterCakes();
+  }
+
+  document.addEventListener('click', function(e) {
+    const dd = document.getElementById('catDropdown');
+    if (dd && !dd.contains(e.target)) dd.classList.remove('open');
+  });
+
+  function filterCakes() {
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    const filtered = cakes.filter(c =>
+      c.name.toLowerCase().includes(search) &&
+      (activeCat === "All" || c.category === activeCat)
+    );
+    displayCakes(filtered);
+    updateCatCounts();
+  }
+
+  // ── PAGE NAVIGATION ───────────────────────────────────────
+  const pages = ['home', 'menu', 'location', 'cart', 'contact'];
+
+  function showPage(name) {
+    pages.forEach(p => {
+      document.getElementById(`page-${p}`)?.classList.remove('active');
+      document.getElementById(`nav-${p}`)?.classList.remove('active');
+    });
+    document.getElementById(`page-${name}`)?.classList.add('active');
+    document.getElementById(`nav-${name}`)?.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (name === 'menu') { displayCakes(); updateCatCounts(); }
+    if (name === 'cart') {
+      renderCart();
+      setTimeout(() => {
+        const total = cart.reduce((s, i) => s + i.price * i.quantity, 0);
+        updateQRAmount(total);
+      }, 100);
+    }
+  }
+
+  // ── SUBMIT ORDER TO BACKEND ───────────────────────────────
+  async function submitOrder(formData) {
+    const btn = document.getElementById('placeOrderBtn');
+    btn.disabled = true;
+    btn.textContent = 'Placing order... 🎂';
+
+    try {
+      const response = await fetch(`${API_BASE}/orders`, {
+        method: 'POST',
+        body: formData   // FormData handles multipart (file upload)
+      });
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Server error');
+      }
+      return result;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Place Order 🎂';
+    }
+  }
+
+  // ── INIT ─────────────────────────────────────────────────
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("searchInput")?.addEventListener("input", filterCakes);
+    updateCatCounts();
+
+    // Checkout form
+    document.getElementById("checkoutForm")?.addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const msg = document.getElementById("orderMsg");
+      const receiptBox = document.getElementById("receiptBox");
+
+      msg.textContent = '';
+      msg.className = 'order-msg';
+      receiptBox.style.display = 'none';
+
+      if (cart.length === 0) {
+        msg.textContent = "Your cart is empty. Please add cakes first!";
+        msg.className = "order-msg error";
+        return;
+      }
+
+      const name = document.getElementById("customerName").value.trim();
+      const phone = document.getElementById("customerPhone").value.trim();
+      const address = document.getElementById("customerAddress").value.trim();
+      const notes = document.getElementById("customerNotes").value.trim();
+
+      // Client-side validation for delivery address
+      if (selectedFulfillment === 'delivery' && !address) {
+        msg.textContent = "Please enter your delivery address.";
+        msg.className = "order-msg error";
+        return;
+      }
+
+      // Require slip for QR payment
+      if (selectedPayment === 'qr') {
+        const slipFile = document.getElementById('slipFile');
+        if (!slipFile.files || slipFile.files.length === 0) {
+          msg.textContent = "Please upload your payment slip before placing the order.";
+          msg.className = "order-msg error";
+          document.getElementById('slipZone').style.borderColor = '#e05555';
+          setTimeout(() => { document.getElementById('slipZone').style.borderColor = ''; }, 3000);
+          return;
+        }
+      }
+
+      // Build FormData for multipart upload (supports the slip file)
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('phone', phone);
+      formData.append('address', address);
+      formData.append('fulfillment', selectedFulfillment);
+      formData.append('paymentMethod', selectedPayment);
+      formData.append('notes', notes);
+      formData.append('cartItems', JSON.stringify(cart));
+
+      const slipFileEl = document.getElementById('slipFile');
+      if (slipFileEl.files[0]) {
+        formData.append('slip', slipFileEl.files[0]);
+      }
+
+      try {
+        const result = await submitOrder(formData);
+
+        const total = result.order.total;
+        const paymentLabel = selectedPayment === 'qr' ? '📱 PromptPay QR' : '💵 ' + (selectedFulfillment === 'pickup' ? 'Pay at Store' : 'Cash on Delivery');
+        const fulfillmentLabel = selectedFulfillment === 'pickup' ? '🏪 Store Pickup' : '🚚 Delivery';
+        let items = '';
+
+        cart.forEach(item => {
+          const sub = item.price * item.quantity;
+          items += `<div class="receipt-item"><span>${escapeHtml(item.name)} × ${item.quantity}</span><strong>฿${sub}</strong></div>`;
+        });
+
+        msg.textContent = `Thank you, ${name}! Your order ${result.order.orderNumber} has been placed 🎂`;
+        msg.className = "order-msg";
+
+        receiptBox.innerHTML = `
+          <h4>🧾 Order Receipt</h4>
+          <p><strong>Order #:</strong> ${result.order.orderNumber}</p>
+          <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+          <p><strong>Phone:</strong> ${escapeHtml(phone)}</p>
+          <p><strong>Method:</strong> ${fulfillmentLabel}</p>
+          ${selectedFulfillment === 'delivery' ? `<p><strong>Address:</strong> ${escapeHtml(address)}</p>` : ''}
+          <p><strong>Payment:</strong> ${paymentLabel}</p>
+          <br>
+          ${items}
+          <div class="receipt-total">Total: ฿${total}</div>
+          ${selectedPayment === 'qr' ? '<p style="margin-top:12px; font-size:13px; color:#2d8f55; font-weight:500;">✓ Payment slip received. We will confirm your order shortly!</p>' : ''}
+          ${selectedFulfillment === 'pickup' ? '<p style="margin-top:8px; font-size:13px; color:#2d8f55; font-weight:500;">📞 We\'ll call you when your cake is ready for pickup!</p>' : ''}
+        `;
+        receiptBox.style.display = "block";
+
+        cart = []; saveCart(); renderCart(); this.reset();
+        document.getElementById('slipPreview').style.display = 'none';
+        document.querySelector('.slip-upload-text').innerHTML =
+          `<strong>Click to upload</strong> or drag your slip here<br>PNG, JPG supported`;
+        // Reset fulfillment to delivery
+        selectFulfillment('delivery');
+
+      } catch (err) {
+        msg.textContent = `❌ Could not place order: ${err.message}. Please call us at 089 434 0422.`;
+        msg.className = "order-msg error";
+      }
+    });
+
+    // Contact form
+    document.getElementById("contactForm")?.addEventListener("submit", function(e) {
+      e.preventDefault();
+      document.getElementById("contactSuccess").style.display = "block";
+      this.reset();
+      setTimeout(() => { document.getElementById("contactSuccess").style.display = "none"; }, 5000);
+    });
+
+    updateCartCount();
+  });
+</script>
+</body>
+</html>
