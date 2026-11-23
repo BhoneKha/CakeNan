@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎂</text></svg>">
   <title>Cake Nan — Admin Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
@@ -236,6 +237,8 @@
     }
 
     /* Status badges */
+    .status-badge, .fulfillment-badge, .payment-badge, .verify-badge { white-space: nowrap; }
+
     .status-badge {
       display: inline-flex;
       align-items: center;
@@ -529,7 +532,42 @@
     .toast.success { background: #1e7a45; }
     .toast.error { background: #c0392b; }
 
+    .header-meta { font-size: 12px; color: rgba(255,255,255,0.55); }
+    .view-site {
+      color: var(--rose-light); font-size: 13px; text-decoration: none;
+      border: 1px solid rgba(232,160,180,0.35); padding: 8px 14px; border-radius: 8px;
+    }
+    .view-site:hover { background: rgba(255,255,255,0.08); }
+
+    .stat-card { position: relative; overflow: hidden; }
+    .stat-icon { position: absolute; right: 16px; top: 14px; font-size: 22px; opacity: 0.35; }
+
+    .filter-btn .count {
+      display: inline-block; min-width: 20px; margin-left: 6px; padding: 1px 7px;
+      border-radius: 20px; background: #f3e9ed; color: var(--deep); font-size: 11px; font-weight: 700;
+    }
+    .filter-btn.active .count { background: white; }
+
+    tbody tr.needs-attention { box-shadow: inset 4px 0 0 #f0b429; }
+    tbody tr.is-cancelled td { opacity: 0.5; }
+
+    .next-btn {
+      padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer;
+      background: var(--rose); color: white; font-family: 'DM Sans', sans-serif;
+      font-size: 12px; font-weight: 600; white-space: nowrap; transition: background 0.2s;
+    }
+    .next-btn:hover { background: var(--deep); }
+
+    .legend { font-size: 12px; color: #aaa; display: flex; align-items: center; gap: 6px; }
+    .legend-bar { width: 4px; height: 14px; background: #f0b429; border-radius: 2px; }
+
     @media (max-width: 900px) {
+      .admin-header { padding: 0 16px; }
+      .admin-logo span, .header-meta { display: none; }
+      .toolbar { padding: 16px; }
+      .toolbar input { width: 100%; }
+      .toolbar-right { margin-left: 0; }
+      .col-items, .col-time { display: none; }
       .stats-bar { grid-template-columns: repeat(2, 1fr); }
       .table-wrap { padding: 16px; }
       .detail-panel { width: 100%; }
@@ -541,6 +579,8 @@
 <div class="admin-header">
   <div class="admin-logo">Cake Nan <span>Admin Dashboard</span></div>
   <div class="header-right">
+    <span class="header-meta" id="lastUpdated"></span>
+    <a class="view-site" href="/" target="_blank">View site ↗</a>
     <div class="live-dot" title="Live data"></div>
     <button class="refresh-btn" onclick="loadOrders()">🔄 Refresh</button>
   </div>
@@ -549,22 +589,27 @@
 <!-- STATS BAR -->
 <div class="stats-bar" id="statsBar">
   <div class="stat-card">
+    <div class="stat-icon">📦</div>
     <div class="stat-label">Total Orders</div>
     <div class="stat-value rose" id="stat-total">—</div>
   </div>
   <div class="stat-card">
+    <div class="stat-icon">⏳</div>
     <div class="stat-label">Pending</div>
     <div class="stat-value" style="color:#856404;" id="stat-pending">—</div>
   </div>
   <div class="stat-card">
+    <div class="stat-icon">🎁</div>
     <div class="stat-label">Ready / Confirmed</div>
     <div class="stat-value" style="color:#0c5460;" id="stat-active">—</div>
   </div>
   <div class="stat-card">
+    <div class="stat-icon">✅</div>
     <div class="stat-label">Completed</div>
     <div class="stat-value green" id="stat-completed">—</div>
   </div>
   <div class="stat-card">
+    <div class="stat-icon">💰</div>
     <div class="stat-label">Today's Revenue</div>
     <div class="stat-value rose" id="stat-revenue">—</div>
   </div>
@@ -573,12 +618,8 @@
 <!-- TOOLBAR -->
 <div class="toolbar">
   <input type="text" id="searchOrders" placeholder="🔍  Search by name, phone, order #..." oninput="renderTable()" />
-  <button class="filter-btn active" data-status="all" onclick="setFilter('all')">All</button>
-  <button class="filter-btn" data-status="pending" onclick="setFilter('pending')">⏳ Pending</button>
-  <button class="filter-btn" data-status="confirmed" onclick="setFilter('confirmed')">✅ Confirmed</button>
-  <button class="filter-btn" data-status="ready" onclick="setFilter('ready')">🎁 Ready</button>
-  <button class="filter-btn" data-status="completed" onclick="setFilter('completed')">✓ Completed</button>
-  <button class="filter-btn" data-status="cancelled" onclick="setFilter('cancelled')">✕ Cancelled</button>
+  <div id="filterBtns" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+  <span class="legend"><span class="legend-bar"></span>Slip waiting for check</span>
   <span class="toolbar-right" id="orderCount">Loading...</span>
 </div>
 
@@ -589,13 +630,13 @@
       <tr>
         <th>Order #</th>
         <th>Customer</th>
-        <th>Items</th>
+        <th class="col-items">Items</th>
         <th>Total</th>
         <th>Method</th>
         <th>Payment</th>
         <th>Slip</th>
         <th>Status</th>
-        <th>Time</th>
+        <th class="col-time">Time</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -642,6 +683,38 @@
   let filterStatus = 'all';
   let currentSlipOrderId = null;
 
+  const NEXT_STEP = {
+    pending: { status: 'confirmed', label: 'Confirm' },
+    confirmed: { status: 'ready', label: 'Mark ready' },
+    ready: { status: 'completed', label: 'Complete' }
+  };
+
+  const FILTERS = [
+    { status: 'all', label: 'All' },
+    { status: 'pending', label: '⏳ Pending' },
+    { status: 'confirmed', label: '✅ Confirmed' },
+    { status: 'ready', label: '🎁 Ready' },
+    { status: 'completed', label: '✓ Completed' },
+    { status: 'cancelled', label: '✕ Cancelled' }
+  ];
+
+  async function api(path, options = {}) {
+    const res = await fetch(`${API}${path}`, {
+      ...options,
+      headers: options.body ? { 'Content-Type': 'application/json' } : undefined
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.message || `HTTP ${res.status}`);
+    return data;
+  }
+
+  function renderFilters() {
+    document.getElementById('filterBtns').innerHTML = FILTERS.map(f => {
+      const count = f.status === 'all' ? allOrders.length : allOrders.filter(o => o.status === f.status).length;
+      return `<button class="filter-btn ${filterStatus === f.status ? 'active' : ''}" onclick="setFilter('${f.status}')">${f.label}<span class="count">${count}</span></button>`;
+    }).join('');
+  }
+
   // ── LOAD ORDERS ───────────────────────────────────────────
   async function loadOrders() {
     try {
@@ -650,7 +723,10 @@
       const data = await res.json();
       allOrders = data.orders || [];
       updateStats();
+      renderFilters();
       renderTable();
+      document.getElementById('lastUpdated').textContent =
+        'Updated ' + new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
     } catch (err) {
       document.getElementById('ordersBody').innerHTML =
         `<tr><td colspan="10" style="text-align:center; padding:40px; color:#e05555;">
@@ -676,9 +752,7 @@
   // ── FILTER ────────────────────────────────────────────────
   function setFilter(status) {
     filterStatus = status;
-    document.querySelectorAll('.filter-btn').forEach(b => {
-      b.classList.toggle('active', b.dataset.status === status);
-    });
+    renderFilters();
     renderTable();
   }
 
@@ -727,14 +801,20 @@
         ? `<button class="icon-btn verify-btn" onclick="verifyPayment('${o.id}')" title="Verify payment">✓</button>`
         : '';
 
+      const needsAttention = o.payment.method === 'qr' && !o.payment.verified && o.status !== 'cancelled';
+      const next = NEXT_STEP[o.status];
+      const nextBtn = next
+        ? `<button class="next-btn" onclick="updateStatus('${o.id}', '${next.status}')">${next.label}</button>`
+        : '';
+
       return `
-        <tr onclick="openDetail('${o.id}')" style="cursor:pointer;">
+        <tr onclick="openDetail('${o.id}')" style="cursor:pointer;" class="${needsAttention ? 'needs-attention' : ''} ${o.status === 'cancelled' ? 'is-cancelled' : ''}">
           <td><div class="order-num">${o.orderNumber}</div></td>
           <td>
             <div class="customer-name">${esc(o.customer.name)}</div>
             <div style="font-size:12px; color:#bbb;">${esc(o.customer.phone)}</div>
           </td>
-          <td style="max-width:180px; font-size:12px; color:#888;">${itemsSummary}</td>
+          <td class="col-items" style="max-width:180px; font-size:12px; color:#888;">${itemsSummary}</td>
           <td><div class="amount">฿${o.total.toLocaleString()}</div></td>
           <td><span class="fulfillment-badge ${ffClass}">${ffLabel}</span></td>
           <td>
@@ -747,11 +827,12 @@
               ${statusLabel(o.status)}
             </span>
           </td>
-          <td style="font-size:12px; color:#bbb; white-space:nowrap;">${time}</td>
+          <td class="col-time" style="font-size:12px; color:#bbb; white-space:nowrap;">${time}</td>
           <td onclick="event.stopPropagation()">
             <div class="action-cell">
+              ${nextBtn}
               <select class="status-select" onchange="updateStatus('${o.id}', this.value)" title="Change status">
-                <option value="">Change...</option>
+                <option value="">More…</option>
                 <option value="pending">⏳ Pending</option>
                 <option value="confirmed">✅ Confirmed</option>
                 <option value="ready">🎁 Ready</option>
@@ -783,30 +864,24 @@
   async function updateStatus(id, status) {
     if (!status) return;
     try {
-      await fetch(`${API}/orders/${id}/status`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status })
-      });
-      showToast(`Status updated to ${status}`, 'success');
+      await api(`/orders/${id}/status`, { method: 'PATCH', body: JSON.stringify({ status }) });
+      showToast(`Order marked as ${status}`, 'success');
       await loadOrders();
-    } catch {
-      showToast('Failed to update status', 'error');
+      if (document.getElementById('detailPanel').classList.contains('open')) openDetail(id);
+    } catch (err) {
+      showToast(`Could not update status: ${err.message}`, 'error');
     }
   }
 
   // ── VERIFY PAYMENT ────────────────────────────────────────
   async function verifyPayment(id) {
     try {
-      await fetch(`${API}/orders/${id}/verify-payment`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ verified: true })
-      });
-      showToast('Payment verified! ✓', 'success');
+      await api(`/orders/${id}/verify-payment`, { method: 'PATCH', body: JSON.stringify({ verified: true }) });
+      showToast('Payment verified ✓', 'success');
       await loadOrders();
-    } catch {
-      showToast('Failed to verify payment', 'error');
+      if (document.getElementById('detailPanel').classList.contains('open')) openDetail(id);
+    } catch (err) {
+      showToast(`Could not verify payment: ${err.message}`, 'error');
     }
   }
 
@@ -814,12 +889,12 @@
   async function deleteOrder(id) {
     if (!confirm('Delete this order? This cannot be undone.')) return;
     try {
-      await fetch(`${API}/orders/${id}`, { method: 'DELETE' });
+      await api(`/orders/${id}`, { method: 'DELETE' });
       showToast('Order deleted', 'success');
       closeDetail();
       await loadOrders();
-    } catch {
-      showToast('Failed to delete order', 'error');
+    } catch (err) {
+      showToast(`Could not delete order: ${err.message}`, 'error');
     }
   }
 
@@ -878,7 +953,7 @@
       <div class="detail-section">
         <div class="detail-section-title">Customer</div>
         <div class="detail-row"><span>Name</span><strong>${esc(order.customer.name)}</strong></div>
-        <div class="detail-row"><span>Phone</span><strong>${esc(order.customer.phone)}</strong></div>
+        <div class="detail-row"><span>Phone</span><strong><a href="tel:${esc(order.customer.phone)}" style="color:var(--rose); text-decoration:none;">${esc(order.customer.phone)} 📞</a></strong></div>
         <div class="detail-row"><span>Method</span><strong>${ffLabel}</strong></div>
         ${order.fulfillment === 'delivery' ? `<div class="detail-row"><span>Address</span><strong style="text-align:right; max-width:60%">${esc(order.customer.address)}</strong></div>` : ''}
         ${order.notes ? `<div class="detail-row"><span>Notes</span><strong>${esc(order.notes)}</strong></div>` : ''}

@@ -7,7 +7,7 @@ const crypto = require('crypto');
 // Load settings from .env if it exists (Node 20.12+)
 try { process.loadEnvFile(path.join(__dirname, '.env')); } catch { /* no .env file */ }
 
-const MENU = require('./public/js/menu.js');
+const { cakes: MENU } = require('./public/js/menu.js');
 
 const app = express();
 const PORT = process.env.PORT || 3000;

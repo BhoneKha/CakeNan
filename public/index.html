@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎂</text></svg>">
   <title>Cake Nan</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
   <style>
@@ -494,145 +495,6 @@
 
     .menu-toolbar input::placeholder { color: #ccc; }
 
-    /* Custom category dropdown */
-    .cat-dropdown-wrap {
-      position: relative;
-      width: 260px;
-      max-width: 100%;
-      user-select: none;
-    }
-
-    .cat-dropdown-trigger {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 13px 18px;
-      background: white;
-      border: 1.5px solid rgba(200,90,124,0.15);
-      border-radius: 50px;
-      cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      font-weight: 500;
-      color: #555;
-      transition: all 0.3s;
-      box-shadow: 0 4px 16px rgba(200,90,124,0.06);
-    }
-
-    .cat-dropdown-trigger:hover {
-      border-color: var(--rose-light);
-      box-shadow: 0 6px 20px rgba(200,90,124,0.1);
-    }
-
-    .cat-dropdown-wrap.open .cat-dropdown-trigger {
-      border-color: var(--rose);
-      border-radius: 20px 20px 0 0;
-      border-bottom-color: transparent;
-      box-shadow: none;
-    }
-
-    .cat-trigger-emoji { font-size: 16px; line-height: 1; }
-    .cat-trigger-label { flex: 1; }
-
-    .cat-trigger-chevron {
-      width: 20px; height: 20px;
-      display: flex; align-items: center; justify-content: center;
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      color: var(--rose-light);
-    }
-
-    .cat-dropdown-wrap.open .cat-trigger-chevron {
-      transform: rotate(180deg);
-      color: var(--rose);
-    }
-
-    .cat-trigger-chevron svg {
-      width: 14px; height: 14px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .cat-dropdown-menu {
-      position: absolute;
-      top: 100%;
-      left: 0; right: 0;
-      background: white;
-      border: 1.5px solid var(--rose);
-      border-top: none;
-      border-radius: 0 0 20px 20px;
-      overflow: hidden;
-      z-index: 100;
-      opacity: 0;
-      transform: translateY(-8px);
-      pointer-events: none;
-      transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 0 16px 40px rgba(200,90,124,0.14);
-    }
-
-    .cat-dropdown-wrap.open .cat-dropdown-menu {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: all;
-    }
-
-    .cat-option {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 18px;
-      cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      color: #777;
-      transition: background 0.15s, color 0.15s;
-      border-top: 1px solid rgba(200,90,124,0.06);
-      position: relative;
-    }
-
-    .cat-option:first-child { border-top: none; }
-
-    .cat-option:hover {
-      background: var(--rose-pale);
-      color: var(--deep);
-    }
-
-    .cat-option.selected {
-      color: var(--rose);
-      font-weight: 500;
-    }
-
-    .cat-option.selected::after {
-      content: '';
-      position: absolute;
-      right: 18px; top: 50%;
-      transform: translateY(-50%);
-      width: 6px; height: 6px;
-      background: var(--rose);
-      border-radius: 50%;
-    }
-
-    .cat-option-emoji { font-size: 15px; line-height: 1; }
-    .cat-option-label { flex: 1; }
-
-    .cat-option-count {
-      font-size: 11px;
-      color: var(--rose-light);
-      background: var(--rose-pale);
-      padding: 2px 8px;
-      border-radius: 20px;
-      font-weight: 600;
-      min-width: 22px;
-      text-align: center;
-    }
-
-    .cat-option.selected .cat-option-count {
-      background: rgba(200,90,124,0.15);
-      color: var(--rose);
-    }
-
     .cake-grid {
       padding: 50px 8%;
       display: grid;
@@ -684,37 +546,6 @@
       padding: 6px 14px;
       border-radius: 50px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    .cake-thumbs {
-      display: flex;
-      gap: 8px;
-      padding: 14px 16px;
-      overflow-x: auto;
-      scrollbar-width: none;
-      background: #faf4f6;
-      border-bottom: 1px solid rgba(200,90,124,0.06);
-    }
-
-    .cake-thumbs::-webkit-scrollbar { display: none; }
-
-    .cake-thumb {
-      width: 52px;
-      height: 52px;
-      border-radius: 10px;
-      object-fit: cover;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: all 0.25s;
-      flex-shrink: 0;
-      opacity: 0.7;
-    }
-
-    .cake-thumb:hover,
-    .cake-thumb.active {
-      border-color: var(--rose);
-      opacity: 1;
-      transform: scale(1.08);
     }
 
     .cake-body {
@@ -1618,6 +1449,75 @@
       margin: 20px auto;
     }
 
+
+    /* ── CATEGORY TABS ── */
+    .cat-tabs { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+    .cat-tab {
+      border: 1.5px solid rgba(200,90,124,0.18); background: white; color: #777;
+      padding: 10px 20px; border-radius: 50px; font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.25s;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .cat-tab:hover { border-color: var(--rose-light); color: var(--deep); }
+    .cat-tab.active { background: var(--rose); border-color: var(--rose); color: white; box-shadow: 0 8px 20px rgba(200,90,124,0.25); }
+    .cat-tab .count { font-size: 11px; background: var(--rose-pale); color: var(--rose); padding: 2px 8px; border-radius: 20px; font-weight: 700; }
+    .cat-tab.active .count { background: rgba(255,255,255,0.25); color: white; }
+
+    /* ── CARD EXTRAS ── */
+    .cake-badge {
+      position: absolute; top: 16px; right: 16px; background: var(--deep); color: white;
+      font-size: 11px; font-weight: 600; padding: 6px 12px; border-radius: 50px; letter-spacing: 0.5px;
+    }
+    .cake-thai { font-size: 13px; color: var(--rose-light); margin-bottom: 8px; }
+    .price-unit { font-family: 'DM Sans', sans-serif; font-size: 12px; color: #bbb; font-weight: 400; margin-left: 4px; }
+
+    /* ── HOME FAVOURITES ── */
+    .favourites { padding: 90px 0 40px; background: linear-gradient(180deg, #fffaf8, #fff3f7); }
+    .section-head { text-align: center; padding: 0 10%; }
+    .section-head .eyebrow { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--rose-light); font-weight: 500; margin-bottom: 14px; }
+    .section-head h2 { font-family: 'Cormorant Garamond', serif; font-size: 46px; font-weight: 300; color: var(--deep); }
+    .fav-grid { padding-top: 40px; padding-bottom: 40px; }
+
+    /* ── CART THUMBNAIL ── */
+    .cart-item-img { width: 56px; height: 56px; border-radius: 12px; object-fit: cover; flex-shrink: 0; }
+
+    /* ── DEMO NOTE ── */
+    .demo-note {
+      display: inline-block; background: #fff4e5; color: #a15c07; border: 1px solid #f6d7a7;
+      font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 50px; margin-bottom: 18px;
+    }
+    .open-tag.closed { background: #fde2e2; color: #b42318; }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; left: 50%; bottom: 28px; transform: translate(-50%, 20px);
+      background: var(--deep); color: white; padding: 14px 22px; border-radius: 50px;
+      font-size: 14px; font-weight: 500; box-shadow: 0 12px 30px rgba(122,45,74,0.35);
+      opacity: 0; pointer-events: none; transition: all 0.3s; z-index: 10000; white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .toast button {
+      background: none; border: none; color: var(--rose-light); font-weight: 700; margin-left: 12px;
+      cursor: pointer; font-family: inherit; font-size: 14px; pointer-events: auto;
+    }
+    .cart-count.bump { animation: bump 0.4s ease; }
+    @keyframes bump { 50% { transform: scale(1.4); } }
+
+    /* ── MOBILE MENU ── */
+    .nav-burger { display: none; background: none; border: none; font-size: 26px; color: var(--rose); cursor: pointer; padding: 4px 8px; }
+    .mobile-menu {
+      display: none; position: fixed; top: 72px; left: 0; right: 0; z-index: 9998;
+      background: rgba(255,250,248,0.98); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(200,90,124,0.12); padding: 8px 5% 16px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+    }
+    .mobile-menu.open { display: block; animation: fadeUp 0.25s ease; }
+    .mobile-menu a {
+      display: block; padding: 14px 4px; font-size: 15px; font-weight: 500; color: #666;
+      border-bottom: 1px solid rgba(200,90,124,0.08); cursor: pointer; text-decoration: none;
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(24px); }
       to { opacity: 1; transform: translateY(0); }
@@ -1646,6 +1546,11 @@
       .menu-hero h1, .location-hero h1, .cart-hero h1, .contact-hero h1 { font-size: 42px; }
       .cake-grid { padding: 30px 5%; }
       .payment-methods { grid-template-columns: 1fr; }
+      .nav-burger { display: block; }
+      .nav { gap: 8px; }
+      .nav-logo { margin-right: auto; }
+      .section-head h2 { font-size: 34px; }
+      .toast { white-space: normal; width: calc(100% - 40px); text-align: center; }
       .fulfillment-options { grid-template-columns: 1fr 1fr; }
     }
   </style>
@@ -1660,10 +1565,20 @@
     <li><a onclick="showPage('location')" id="nav-location">Location</a></li>
     <li><a onclick="showPage('contact')" id="nav-contact">Contact</a></li>
   </ul>
+  <button class="nav-burger" onclick="toggleMobileMenu()" aria-label="Open menu">☰</button>
   <button class="nav-cart-btn" onclick="showPage('cart')">
     🛒 Cart <span class="cart-count" id="cartCount">0</span>
   </button>
 </nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a onclick="showPage('home')">Home</a>
+  <a onclick="showPage('menu')">Menu</a>
+  <a onclick="showPage('location')">Location</a>
+  <a onclick="showPage('contact')">Contact</a>
+</div>
+
+<div class="toast" id="toast"></div>
 
 <!-- HOME -->
 <div class="page active" id="page-home">
@@ -1681,17 +1596,17 @@
       </div>
       <div class="hero-badges-row">
         <div class="hero-badge">🎂 Handmade Daily</div>
-        <div class="hero-badge">🌸 Fresh Ingredients</div>
+        <div class="hero-badge">🍰 Slices from ฿40</div>
         <div class="hero-badge">🚚 Local Delivery</div>
       </div>
     </div>
     <div class="hero-right">
-      <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=80" alt="Chocolate layer cake" />
+      <img src="images/shop-display.jpg" alt="Cakes in the Cake Nan display case" />
       <div class="hero-right-overlay"></div>
       <div class="hero-stat-card">
-        <div class="hero-stat-num">6+</div>
+        <div class="hero-stat-num">15+</div>
         <div>
-          <div class="hero-stat-label">Cake<br>Varieties</div>
+          <div class="hero-stat-label">Cakes &amp;<br>treats</div>
         </div>
       </div>
     </div>
@@ -1721,23 +1636,34 @@
     </div>
   </div>
 
+  <section class="favourites">
+    <div class="section-head">
+      <div class="eyebrow">Customer Favourites</div>
+      <h2>Fresh From Our Display Case</h2>
+    </div>
+    <div class="cake-grid fav-grid" id="favGrid"></div>
+    <div style="text-align:center;">
+      <button class="btn-primary" onclick="showPage('menu')">See the Full Menu</button>
+    </div>
+  </section>
+
   <div class="about-strip">
     <div class="about-imgs">
       <div class="about-img-main">
-        <img src="https://images.unsplash.com/photo-1562777717-dc6984f65a63?auto=format&fit=crop&w=600&q=80" alt="Cake" />
+        <img src="images/fridge.jpg" alt="Cake slices and cupcakes in the fridge" />
       </div>
       <div class="about-img-sm">
-        <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=400&q=80" alt="Cake" />
+        <img src="images/race-car.jpg" alt="Race car birthday cake" />
       </div>
       <div class="about-img-sm">
-        <img src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=400&q=80" alt="Cheesecake" />
+        <img src="images/foi-thong.jpg" alt="Foi thong cake slices" />
       </div>
     </div>
     <div class="about-text">
       <div class="eyebrow">Our Story</div>
       <h2>Made with Love in Nan</h2>
       <p>Cake Nan was born from a simple passion: creating beautiful, delicious cakes that bring people together. Nestled in the charming province of Nan, Thailand, we bake every cake by hand using the finest local ingredients.</p>
-      <p>From classic vanilla to vibrant fruit cakes, every creation is a little piece of our heart. We believe that the best cakes aren't just eaten — they're remembered.</p>
+      <p>From cute character mini cakes to ฿40 slices of red velvet and foi thong, every creation is a little piece of our heart. We believe that the best cakes aren't just eaten — they're remembered.</p>
       <button class="btn-primary" onclick="showPage('menu')" style="margin-top: 12px;">See Our Menu</button>
     </div>
   </div>
@@ -1746,7 +1672,7 @@
     <div class="footer-logo">Cake Nan</div>
     <div class="footer-divider"></div>
     <p>Mahawong Rd, Nai Wiang, Mueang Nan District, Nan 55000</p>
-    <p>📞 089 434 0422</p>
+    <p>📞 012 345 6789</p>
     <p style="margin-top: 16px;">© 2026 Cake Nan Bakery · Made with 💕 in Nan, Thailand</p>
   </div>
 </div>
@@ -1765,43 +1691,8 @@
         <span class="search-icon">🔍</span>
         <input type="text" id="searchInput" placeholder="Search cake name..." />
       </div>
-      <div class="cat-dropdown-wrap" id="catDropdown">
-        <div class="cat-dropdown-trigger" onclick="toggleCatDropdown()">
-          <span class="cat-trigger-emoji" id="triggerEmoji">🎂</span>
-          <span class="cat-trigger-label" id="triggerLabel">All Cakes</span>
-          <span class="cat-trigger-chevron">
-            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-          </span>
-        </div>
-        <div class="cat-dropdown-menu" id="catMenu">
-          <div class="cat-option selected" data-cat="All" data-emoji="🎂" data-label="All Cakes" onclick="selectCatDrop(this)">
-            <span class="cat-option-emoji">🎂</span>
-            <span class="cat-option-label">All Cakes</span>
-            <span class="cat-option-count" id="count-All">6</span>
-          </div>
-          <div class="cat-option" data-cat="Chocolate" data-emoji="🍫" data-label="Chocolate" onclick="selectCatDrop(this)">
-            <span class="cat-option-emoji">🍫</span>
-            <span class="cat-option-label">Chocolate</span>
-            <span class="cat-option-count" id="count-Chocolate">0</span>
-          </div>
-          <div class="cat-option" data-cat="Fruit" data-emoji="🍓" data-label="Fruit" onclick="selectCatDrop(this)">
-            <span class="cat-option-emoji">🍓</span>
-            <span class="cat-option-label">Fruit</span>
-            <span class="cat-option-count" id="count-Fruit">0</span>
-          </div>
-          <div class="cat-option" data-cat="Classic" data-emoji="✨" data-label="Classic" onclick="selectCatDrop(this)">
-            <span class="cat-option-emoji">✨</span>
-            <span class="cat-option-label">Classic</span>
-            <span class="cat-option-count" id="count-Classic">0</span>
-          </div>
-          <div class="cat-option" data-cat="Birthday" data-emoji="🎉" data-label="Birthday" onclick="selectCatDrop(this)">
-            <span class="cat-option-emoji">🎉</span>
-            <span class="cat-option-label">Birthday</span>
-            <span class="cat-option-count" id="count-Birthday">0</span>
-          </div>
-        </div>
-      </div>
     </div>
+    <div class="cat-tabs" id="catTabs"></div>
   </div>
 
   <div class="cake-grid" id="cakeContainer"></div>
@@ -1843,14 +1734,14 @@
         <div class="info-icon">📞</div>
         <div>
           <div class="info-label">Phone</div>
-          <div class="info-val"><a href="tel:0894340422">089 434 0422</a></div>
+          <div class="info-val"><a href="tel:0123456789">012 345 6789</a></div>
         </div>
       </div>
 
       <div class="info-item">
         <div class="info-icon">🕐</div>
         <div>
-          <div class="info-label">Opening Hours <span class="open-tag">Open</span></div>
+          <div class="info-label">Opening Hours <span class="open-tag" id="openTag">Open</span></div>
           <div class="hours-grid" style="margin-top:10px;">
             <span>Mon – Fri</span><span>7:00 AM – 8:00 PM</span>
             <span>Saturday</span><span>7:00 AM – 8:00 PM</span>
@@ -1931,7 +1822,7 @@
         <div class="pickup-info-banner" id="pickupBanner">
           <strong>🏪 Store Pickup Selected</strong>
           Mahawong Rd, Nai Wiang, Mueang Nan District, Nan 55000<br>
-          📞 089 434 0422 · Open daily 7:00 AM – 8:00 PM<br>
+          📞 012 345 6789 · Open daily 7:00 AM – 8:00 PM<br>
           <span style="margin-top:6px; display:block; color:#b86a3a; font-weight:500;">We'll call you when your order is ready!</span>
         </div>
 
@@ -1957,6 +1848,7 @@
             <h4>PromptPay Payment</h4>
           </div>
           <div class="thai-qr-subtitle">สแกน QR เพื่อชำระเงิน · Scan to pay</div>
+          <div class="demo-note">⚠️ Demo site. Please don't send real money</div>
 
           <div class="qr-visual-wrap">
             <div class="qr-frame">
@@ -1977,7 +1869,7 @@
             </div>
             <div class="qr-account-row">
               <span>เบอร์ PromptPay</span>
-              <strong>089-434-0422</strong>
+              <strong>012-345-6789</strong>
             </div>
             <div class="qr-account-row">
               <span>ธนาคาร · Bank</span>
@@ -2096,7 +1988,7 @@
   <div class="footer">
     <div class="footer-logo">Cake Nan</div>
     <div class="footer-divider"></div>
-    <p>Mahawong Rd, Nai Wiang, Mueang Nan District, Nan 55000 · 📞 089 434 0422</p>
+    <p>Mahawong Rd, Nai Wiang, Mueang Nan District, Nan 55000 · 📞 012 345 6789</p>
     <p style="margin-top: 10px;">© 2026 Cake Nan Bakery · Made with 💕 in Nan, Thailand</p>
   </div>
 </div>
@@ -2114,10 +2006,27 @@
   }
 
   // ── CAKE DATA ── (lives in js/menu.js so the server uses the same prices)
-  const cakes = window.CAKE_MENU || [];
+  const MENU = window.CAKE_MENU || { categories: [], cakes: [] };
+  const cakes = MENU.cakes;
+  const categories = MENU.categories;
+  const FAVOURITE_IDS = [9, 12, 5, 14];
+
+  function categoryLabel(id) {
+    return (categories.find(c => c.id === id) || {}).label || '';
+  }
+
+  function cakeImage(id) {
+    return (cakes.find(c => c.id === id) || {}).image || '';
+  }
 
   // ── CART ──────────────────────────────────────────────────
-  let cart = JSON.parse(localStorage.getItem("cakeNanCart")) || [];
+  let cart = [];
+  try { cart = JSON.parse(localStorage.getItem("cakeNanCart")) || []; } catch { cart = []; }
+  // Drop anything that is no longer on the menu and refresh names and prices
+  cart = cart.map(item => {
+    const cake = cakes.find(c => c.id === item.id);
+    return cake ? { id: cake.id, name: cake.name, price: cake.price, quantity: Math.max(1, parseInt(item.quantity, 10) || 1) } : null;
+  }).filter(Boolean);
   let selectedPayment = 'qr';
   let selectedFulfillment = 'delivery';
 
@@ -2133,6 +2042,7 @@
 
   function addToCart(cakeId) {
     const cake = cakes.find(c => c.id === cakeId);
+    if (!cake) return;
     const existing = cart.find(i => i.id === cakeId);
     if (existing) {
       existing.quantity++;
@@ -2140,12 +2050,28 @@
       cart.push({ id: cake.id, name: cake.name, price: cake.price, quantity: 1 });
     }
     saveCart();
-    const btn = document.querySelector(`[data-add="${cakeId}"]`);
-    if (btn) {
+
+    const badge = document.getElementById('cartCount');
+    badge.classList.remove('bump');
+    void badge.offsetWidth;
+    badge.classList.add('bump');
+
+    showToast(`🎂 ${escapeHtml(cake.name)} added`, true);
+
+    document.querySelectorAll(`[data-add="${cakeId}"]`).forEach(btn => {
       btn.textContent = '✓';
       btn.style.background = '#2d8f55';
       setTimeout(() => { btn.textContent = '+'; btn.style.background = ''; }, 1200);
-    }
+    });
+  }
+
+  let toastTimer;
+  function showToast(html, withCartLink) {
+    const el = document.getElementById('toast');
+    el.innerHTML = html + (withCartLink ? `<button onclick="showPage('cart')">View cart →</button>` : '');
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 2600);
   }
 
   function increaseQty(id) {
@@ -2188,7 +2114,8 @@
       total += sub;
       html += `
         <div class="cart-item-row">
-          <div>
+          <img class="cart-item-img" src="${cakeImage(item.id)}" alt="" />
+          <div style="flex:1;">
             <div class="cart-item-name">${escapeHtml(item.name)}</div>
             <div class="cart-item-meta">฿${item.price} each</div>
           </div>
@@ -2290,7 +2217,7 @@
   }
 
   function generateQR(amount) {
-    const payload = buildPromptPayPayload('0894340422', amount);
+    const payload = buildPromptPayPayload('0123456789', amount);
     const canvas = document.getElementById('promptpayQR');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -2352,7 +2279,7 @@
     ctx.fillText('PromptPay', 90, 75);
     ctx.font = '12px sans-serif';
     ctx.fillStyle = '#666';
-    ctx.fillText('089-434-0422', 90, 100);
+    ctx.fillText('012-345-6789', 90, 100);
     ctx.fillText('฿' + amount.toFixed(2), 90, 120);
   }
 
@@ -2378,97 +2305,83 @@
     reader.readAsDataURL(file);
   }
 
-  // ── DISPLAY CAKES ────────────────────────────────────────
+  // ── DISPLAY CAKES ───────────────────────────────────────
+  function cakeCardHtml(cake) {
+    return `
+      <div class="cake-card">
+        <div class="cake-main-img-wrap">
+          <img class="cake-main-img" src="${cake.image}" alt="${escapeHtml(cake.name)}" loading="lazy" />
+          <div class="cake-category-pill">${escapeHtml(categoryLabel(cake.category))}</div>
+          ${cake.badge ? `<div class="cake-badge">${escapeHtml(cake.badge)}</div>` : ''}
+        </div>
+        <div class="cake-body">
+          <div class="cake-name">${escapeHtml(cake.name)}</div>
+          <div class="cake-thai">${escapeHtml(cake.thai || '')}</div>
+          <div class="cake-desc">${escapeHtml(cake.description)}</div>
+          <div class="cake-footer">
+            <div class="cake-price">฿${cake.price}<span class="price-unit">${cake.category === 'mini' ? '/ cake' : cake.category === 'slice' ? '/ slice' : ''}</span></div>
+            <button class="add-btn" data-add="${cake.id}" onclick="addToCart(${cake.id})" aria-label="Add ${escapeHtml(cake.name)} to cart">+</button>
+          </div>
+        </div>
+      </div>`;
+  }
+
   function displayCakes(list = cakes) {
     const container = document.getElementById("cakeContainer");
     if (!container) return;
-
-    if (list.length === 0) {
-      container.innerHTML = "<p style='text-align:center; width:100%; color:#ccc; padding: 40px 0;'>No cakes found.</p>";
-      return;
-    }
-
-    container.innerHTML = '';
-    list.forEach(cake => {
-      const card = document.createElement("div");
-      card.className = "cake-card";
-      card.innerHTML = `
-        <div class="cake-main-img-wrap">
-          <img class="cake-main-img" id="main-img-${cake.id}" src="${cake.images[0]}" alt="${cake.name}" />
-          <div class="cake-category-pill">${cake.category}</div>
-        </div>
-        <div class="cake-thumbs" id="thumbs-${cake.id}">
-          ${cake.images.map((img, idx) => `
-            <img
-              class="cake-thumb ${idx === 0 ? 'active' : ''}"
-              src="${img}"
-              alt="view ${idx+1}"
-              onclick="switchImage(${cake.id}, '${img}', this)"
-            />
-          `).join('')}
-        </div>
-        <div class="cake-body">
-          <div class="cake-name">${cake.name}</div>
-          <div class="cake-desc">${cake.description}</div>
-          <div class="cake-footer">
-            <div class="cake-price">฿${cake.price}</div>
-            <button class="add-btn" data-add="${cake.id}" onclick="addToCart(${cake.id})">+</button>
-          </div>
-        </div>
-      `;
-      container.appendChild(card);
-    });
+    container.innerHTML = list.length
+      ? list.map(cakeCardHtml).join('')
+      : "<p style='text-align:center; grid-column:1/-1; color:#ccc; padding: 40px 0;'>No cakes found.</p>";
   }
 
-  function switchImage(cakeId, src, thumbEl) {
-    const mainImg = document.getElementById(`main-img-${cakeId}`);
-    if (mainImg) mainImg.src = src;
-    const thumbs = document.querySelectorAll(`#thumbs-${cakeId} .cake-thumb`);
-    thumbs.forEach(t => t.classList.remove('active'));
-    thumbEl.classList.add('active');
+  function renderFavourites() {
+    const grid = document.getElementById('favGrid');
+    if (!grid) return;
+    grid.innerHTML = FAVOURITE_IDS.map(id => cakes.find(c => c.id === id)).filter(Boolean).map(cakeCardHtml).join('');
   }
 
-  let activeCat = 'All';
+  let activeCat = 'all';
 
-  function updateCatCounts() {
-    const search = document.getElementById("searchInput")?.value.toLowerCase() || '';
-    ['All','Chocolate','Fruit','Classic','Birthday'].forEach(cat => {
-      const count = cakes.filter(c =>
-        c.name.toLowerCase().includes(search) &&
-        (cat === 'All' || c.category === cat)
-      ).length;
-      const el = document.getElementById(`count-${cat}`);
-      if (el) el.textContent = count;
-    });
+  function renderTabs() {
+    const search = (document.getElementById("searchInput")?.value || '').toLowerCase();
+    const matches = c => c.name.toLowerCase().includes(search) || (c.thai || '').includes(search);
+    const tabs = [{ id: 'all', label: 'All', emoji: '✨' }, ...categories];
+    document.getElementById('catTabs').innerHTML = tabs.map(t => {
+      const count = cakes.filter(c => matches(c) && (t.id === 'all' || c.category === t.id)).length;
+      return `<button class="cat-tab ${t.id === activeCat ? 'active' : ''}" onclick="selectCategory('${t.id}')">
+        <span>${t.emoji}</span>${escapeHtml(t.label)}<span class="count">${count}</span></button>`;
+    }).join('');
   }
 
-  function toggleCatDropdown() {
-    document.getElementById('catDropdown').classList.toggle('open');
-  }
-
-  function selectCatDrop(el) {
-    activeCat = el.dataset.cat;
-    document.querySelectorAll('.cat-option').forEach(o => o.classList.remove('selected'));
-    el.classList.add('selected');
-    document.getElementById('triggerEmoji').textContent = el.dataset.emoji;
-    document.getElementById('triggerLabel').textContent = el.dataset.label;
-    document.getElementById('catDropdown').classList.remove('open');
+  function selectCategory(id) {
+    activeCat = id;
     filterCakes();
   }
 
-  document.addEventListener('click', function(e) {
-    const dd = document.getElementById('catDropdown');
-    if (dd && !dd.contains(e.target)) dd.classList.remove('open');
-  });
-
   function filterCakes() {
-    const search = document.getElementById("searchInput").value.toLowerCase();
+    const search = (document.getElementById("searchInput")?.value || '').toLowerCase();
     const filtered = cakes.filter(c =>
-      c.name.toLowerCase().includes(search) &&
-      (activeCat === "All" || c.category === activeCat)
+      (c.name.toLowerCase().includes(search) || (c.thai || '').includes(search)) &&
+      (activeCat === 'all' || c.category === activeCat)
     );
     displayCakes(filtered);
-    updateCatCounts();
+    renderTabs();
+  }
+
+  // ── OPEN / CLOSED (Thailand time) ─────────────────────────
+  function updateOpenStatus() {
+    const tag = document.getElementById('openTag');
+    if (!tag) return;
+    const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Bangkok' }));
+    const hour = now.getHours() + now.getMinutes() / 60;
+    const opensAt = now.getDay() === 0 ? 8 : 7;
+    const open = hour >= opensAt && hour < 20;
+    tag.textContent = open ? 'Open now' : 'Closed';
+    tag.classList.toggle('closed', !open);
+  }
+
+  function toggleMobileMenu(force) {
+    document.getElementById('mobileMenu').classList.toggle('open', force);
   }
 
   // ── PAGE NAVIGATION ───────────────────────────────────────
@@ -2482,7 +2395,8 @@
     document.getElementById(`page-${name}`)?.classList.add('active');
     document.getElementById(`nav-${name}`)?.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    if (name === 'menu') { displayCakes(); updateCatCounts(); }
+    toggleMobileMenu(false);
+    if (name === 'menu') filterCakes();
     if (name === 'cart') {
       renderCart();
       setTimeout(() => {
@@ -2518,7 +2432,9 @@
   // ── INIT ─────────────────────────────────────────────────
   document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("searchInput")?.addEventListener("input", filterCakes);
-    updateCatCounts();
+    filterCakes();
+    renderFavourites();
+    updateOpenStatus();
 
     // Checkout form
     document.getElementById("checkoutForm")?.addEventListener("submit", async function(e) {
@@ -2615,7 +2531,7 @@
         selectFulfillment('delivery');
 
       } catch (err) {
-        msg.textContent = `❌ Could not place order: ${err.message}. Please call us at 089 434 0422.`;
+        msg.textContent = `❌ Could not place order: ${err.message}. Please call us at 012 345 6789.`;
         msg.className = "order-msg error";
       }
     });
